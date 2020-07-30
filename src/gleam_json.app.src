@@ -1,6 +1,6 @@
 {application, gleam_json,
  [{description, "A Gleam program"},
-  {vsn, "1.0.0"},
+  {vsn, "0.1.0"},
   {registered, []},
   {applications,
    [kernel,
