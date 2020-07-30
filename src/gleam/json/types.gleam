@@ -1,6 +1,5 @@
 import gleam/dynamic.{Dynamic}
 
-
 pub external type Json
 
 pub type Failure {
