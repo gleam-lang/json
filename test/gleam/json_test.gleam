@@ -1,7 +1,7 @@
 import gleam/dynamic
 import gleam/option.{None, Some}
 import gleam/result
-import gleam/json.{Json}
+import gleam/json
 import gleam/should
 
 pub fn decode_test() {
