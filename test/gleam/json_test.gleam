@@ -1,7 +1,7 @@
 import gleam/dynamic
 import gleam/option.{None, Some}
 import gleam/result
-import gleam/json.{Json}
+import gleam/json
 import gleam/should
 
 pub fn decode_test() {
@@ -23,7 +23,7 @@ pub fn encode_test() {
   |> json.encode()
   |> should.equal("null")
 
-  json.object([tuple("foo", json.int(5))])
+  json.object([#("foo", json.int(5))])
   |> json.encode()
   |> should.equal("{\"foo\":5}")
 
