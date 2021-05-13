@@ -23,7 +23,7 @@ pub fn encode_test() {
   |> json.encode()
   |> should.equal("null")
 
-  json.object([tuple("foo", json.int(5))])
+  json.object([#("foo", json.int(5))])
   |> json.encode()
   |> should.equal("{\"foo\":5}")
 

@@ -61,7 +61,7 @@ pub fn nullable(input: Option(a), mapper: fn(a) -> Json) -> Json {
   |> option.unwrap(null())
 }
 
-pub fn object(entries: List(tuple(String, Json))) -> Json {
+pub fn object(entries: List(#(String, Json))) -> Json {
   entries
   |> map.from_list()
   |> dynamic.from()
