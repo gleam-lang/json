@@ -1,8 +1,11 @@
-{"1.1.0",
-[{<<"gleam_stdlib">>,{pkg,<<"gleam_stdlib">>,<<"0.10.1">>},0},
- {<<"jsone">>,{pkg,<<"jsone">>,<<"1.5.2">>},0}]}.
+{"1.2.0",
+[{<<"gleam_stdlib">>,{pkg,<<"gleam_stdlib">>,<<"0.15.0">>},0},
+ {<<"jsone">>,{pkg,<<"jsone">>,<<"1.5.7">>},0}]}.
 [
 {pkg_hash,[
- {<<"gleam_stdlib">>, <<"F123F33E03B5CDF5E19FC179B9EE81269DEB93F7DEFADB17EF2930E4DB9011E7">>},
- {<<"jsone">>, <<"87ADEA283C9CF24767B4DEED44602989A5331156DF5D60A2660E9C9114D54046">>}]}
+ {<<"gleam_stdlib">>, <<"7979CDEA88D206250845F129A342C82FB04DA5DFD4ECE3CC5C6A1E3983117D15">>},
+ {<<"jsone">>, <<"036EC290BF3B2B3348B2EEC199A0FCDA62CE296AB6B736A403A6A440C5203618">>}]},
+{pkg_hash_ext,[
+ {<<"gleam_stdlib">>, <<"22B54D25271227B20E28B3DB341E39FEB04DB88D10A01AA7537F5FFD428CB0D2">>},
+ {<<"jsone">>, <<"5F146CBF953469667EEE145FB066D6EE6B9B181BCFD547295317526E7464D732">>}]}
 ].
