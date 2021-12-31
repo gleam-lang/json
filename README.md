@@ -5,40 +5,54 @@ Work with JSON in Gleam!
 ### Encoding
 
 ```rust
+import gleam/list
 import gleam/json.{object, string, list, int, null}
 
-let data = object([
-  #("foo", string("bar")),
-  #("values", list([int(1), int(2)])),
-  #("nope", null())
-])
-json.encode(data)
-// {"foo":"bar","nope":null,"values":[1,2]}
+pub type Cat {
+  Cat(name: String)
+}
+
+pub fn cat_to_json(cat: Cat) -> String {
+  let data = object([
+    #("name", string(cat.name)),
+    #("lives", int(9),
+    #("flaws", null()),
+    #("nicknames", list([string("Kitty"), string("Sweetie")])),
+  ])
+  json.encode(data)
+}
 ```
 
 ### Decoding
 
-Note: JSON is a dynamic data structure.
-The best way to manage decode JSON data is using `gleam/dynamic`.
+JSON is decoded into a `Dynamic` value which can be decoded using the
+`gleam/dynamic` module from the Gleam standard library.
 
 ```rust
 import gleam/json
-import gleam/dynamic
+import gleam/dynamic.{DecodeError}
+import gleam/result
 
-let encoded =
-  "{\"foo\":\"bar\",\"nope\":null,\"values\":[1,2]}"
+pub type MyError {
+  InvalidJson
+  InvalidFormat(DecodeError)
+}
 
-assert Ok(data) = json.decode(encoded)
-let data = dynamic.from(data)
+pub fn cat_from_json(json: String) -> Result<Cat, MyError> {
+  try data = 
+    json.decode(encoded)
+    |> result.put_error(InvalidJson)
 
-assert Ok(foo) = dynamic.field(data, "foo")
-assert Ok("bar") = dynamic.string(foo)
+  let data = dynamic.from(data)
+  try cat = {
+    try name = dynamic.field(data, "name")
+    try name = dynamic.string(name)
+    Ok(Cat(name))
+  }
+  |> result.map_error(InvalidFormat)
 
-assert Ok(values) = dynamic.field(data, "values")
-assert Ok([1, 2]) = dynamic.typed_list(values, dynamic.int)
-
-assert Ok(nope) = dynamic.field(data, "nope")
-assert Ok(_) = dynamic.atom(nope)
+  Ok(cat)
+}
 ```
 
 ## Installation
