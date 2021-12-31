@@ -5,12 +5,12 @@ Work with JSON in Gleam!
 ### Encoding
 
 ```rust
-import gleam/json
+import gleam/json.{object, string, list, int, null}
 
-let data = json.object([
-  tuple("foo", json.string("bar")),
-  tuple("values", json.list([json.int(1), json.int(2)])),
-  tuple("nope", json.null())
+let data = object([
+  #("foo", string("bar")),
+  #("values", list([int(1), int(2)])),
+  #("nope", null())
 ])
 json.encode(data)
 // {"foo":"bar","nope":null,"values":[1,2]}
@@ -23,6 +23,7 @@ The best way to manage decode JSON data is using `gleam/dynamic`.
 
 ```rust
 import gleam/json
+import gleam/dynamic
 
 let encoded =
   "{\"foo\":\"bar\",\"nope\":null,\"values\":[1,2]}"
