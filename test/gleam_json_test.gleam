@@ -2,7 +2,12 @@ import gleam/dynamic
 import gleam/option.{None, Some}
 import gleam/result
 import gleam/json
-import gleam/should
+import gleeunit/should
+import gleeunit
+
+pub fn main() {
+  gleeunit.main()
+}
 
 pub fn decode_test() {
   json.decode("5")

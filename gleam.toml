@@ -1,1 +1,17 @@
 name = "gleam_json"
+version = "0.1.0"
+licences = ["Apache-2.0"]
+description = "Work with JSON in Gleam"
+
+repository = { type = "github", user = "gleam", repo = "json" }
+links = [
+  { title = "Website", href = "https://gleam.run" },
+  { title = "Sponsor", href = "https://github.com/sponsors/lpil" },
+]
+
+[dependencies]
+gleam_stdlib = "~> 0.18"
+jsone = "~> 1.7"
+
+[dev-dependencies]
+gleeunit = "~> 0.5"
