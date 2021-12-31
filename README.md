@@ -1,6 +1,6 @@
-# gleam_json
+# json 🐑
 
-A Gleam library for encoding decoding JSON.
+Work with JSON in Gleam!
 
 ### Encoding
 
@@ -42,10 +42,8 @@ assert Ok(_) = dynamic.atom(nope)
 
 ## Installation
 
-This package can be installed by adding `gleam_json` to your `rebar.config` dependencies:
+Add this package to your Gleam project.
 
-```erlang
-{deps, [
-    gleam_json
-]}.
+```shell
+gleam add gleam_json
 ```
