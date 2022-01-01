@@ -5,12 +5,9 @@ Work with JSON in Gleam!
 ### Encoding
 
 ```rust
+import myapp.{Cat}
 import gleam/list
 import gleam/json.{object, string, list, int, null}
-
-pub type Cat {
-  Cat(name: String)
-}
 
 pub fn cat_to_json(cat: Cat) -> String {
   object([
@@ -29,6 +26,7 @@ JSON is decoded into a `Dynamic` value which can be decoded using the
 `gleam/dynamic` module from the Gleam standard library.
 
 ```rust
+import myapp.{Cat}
 import gleam/json
 import gleam/dynamic.{DecodeError}
 import gleam/result
