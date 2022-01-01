@@ -31,11 +31,6 @@ import gleam/json
 import gleam/dynamic
 import gleam/result
 
-pub type MyError {
-  InvalidJson(json.DecodeError)
-  InvalidFormat(dynamic.DecodeError)
-}
-
 pub fn cat_from_json(json: String) -> Result<Cat, MyError> {
   try data = 
     json.decode(encoded)
@@ -50,6 +45,11 @@ pub fn cat_from_json(json: String) -> Result<Cat, MyError> {
   |> result.map_error(InvalidFormat)
 
   Ok(cat)
+}
+
+pub type MyError {
+  InvalidJson(json.DecodeError)
+  InvalidFormat(dynamic.DecodeError)
 }
 ```
 
