@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## v0.2.0 - 2022-01-01
 
 - Converted to use the Gleam build tool.
 - The underlying `jsone` Erlang JSON libary has been replaced with the new
