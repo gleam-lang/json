@@ -34,7 +34,7 @@ import gleam/result
 pub fn cat_from_json(json: String) -> Result<Cat, MyError> {
   try data = 
     json.decode(encoded)
-    |> result.put_error(InvalidJson)
+    |> result.map_error(InvalidJson)
 
   let data = dynamic.from(data)
   try cat = {
