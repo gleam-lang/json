@@ -98,6 +98,18 @@ pub external fn bool(input: Bool) -> Json =
 pub external fn int(input: Int) -> Json =
   "thoas_encode" "integer"
 
+/// Encode an float into JSON.
+///
+/// ## Examples
+///
+/// ```gleam
+/// > to_string(float(4.7))
+/// "4.7"
+/// ```
+///
+pub external fn float(input: Float) -> Json =
+  "thoas_encode" "float"
+
 /// The JSON value null.
 ///
 /// ## Examples

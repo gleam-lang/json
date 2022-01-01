@@ -36,6 +36,22 @@ pub fn encode_null_test() {
   |> should_encode("null")
 }
 
+pub fn encode_int_test() {
+  json.int(-50)
+  |> should_encode("-50")
+
+  json.int(100)
+  |> should_encode("100")
+}
+
+pub fn encode_float_test() {
+  json.float(-50.5)
+  |> should_encode("-50.5")
+
+  json.float(100.0)
+  |> should_encode("100.0")
+}
+
 pub fn encode_object_test() {
   json.object([#("foo", json.int(5))])
   |> should_encode("{\"foo\":5}")
