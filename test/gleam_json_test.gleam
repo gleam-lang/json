@@ -62,6 +62,16 @@ pub fn encode_nullable_none_test() {
   |> should_encode("null")
 }
 
+pub fn encode_bool_true_test() {
+  json.bool(True)
+  |> should_encode("true")
+}
+
+pub fn encode_bool_false_test() {
+  json.bool(False)
+  |> should_encode("false")
+}
+
 fn should_encode(data: Json, expected: String) {
   data
   |> json.to_string()

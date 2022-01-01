@@ -52,12 +52,10 @@ pub fn nullable(from input: Option(a), of inner_type: fn(a) -> Json) -> Json {
 }
 
 // TODO: document
-// TODO: test
 pub external fn object(entries: List(#(String, Json))) -> Json =
   "thoas_encode" "non_recursive_object"
 
 // TODO: document
-// TODO: test
 pub fn array(from entries: List(a), of inner_type: fn(a) -> Json) -> Json {
   entries
   |> list.map(inner_type)
@@ -65,6 +63,5 @@ pub fn array(from entries: List(a), of inner_type: fn(a) -> Json) -> Json {
 }
 
 // TODO: document
-// TODO: test
 pub external fn preprocessed_array(from: List(Json)) -> Json =
   "thoas_encode" "non_recursive_array"
