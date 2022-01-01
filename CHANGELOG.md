@@ -10,6 +10,7 @@
 - The `list` function has been replaced by the `array` and `preprocessed_array`
   functions.
 - The `nullable` function gains argument labels.
+- The `float` function has been added.
 
 ## v0.1.0 - 2020-07-30
 
