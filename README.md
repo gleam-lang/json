@@ -14,7 +14,7 @@ pub fn cat_to_json(cat: Cat) -> String {
     #("name", string(cat.name)),
     #("lives", int(9),
     #("flaws", null()),
-    #("nicknames", list([string("Kitty"), string("Sweetie")])),
+    #("nicknames", array(["Kitty", "Sweetie"], of: string)),
   ])
   |> json.to_string
 }
@@ -28,12 +28,12 @@ JSON is decoded into a `Dynamic` value which can be decoded using the
 ```rust
 import myapp.{Cat}
 import gleam/json
-import gleam/dynamic.{DecodeError}
+import gleam/dynamic
 import gleam/result
 
 pub type MyError {
-  InvalidJson
-  InvalidFormat(DecodeError)
+  InvalidJson(json.DecodeError)
+  InvalidFormat(dynamic.DecodeError)
 }
 
 pub fn cat_from_json(json: String) -> Result<Cat, MyError> {
