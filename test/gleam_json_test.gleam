@@ -47,12 +47,12 @@ pub fn encode_list_test() {
 }
 
 pub fn encode_nullable_some_test() {
-  json.nullable(Some(5), json.int)
+  json.nullable(Some(5), the: json.int)
   |> should_encode("5")
 }
 
 pub fn encode_nullable_none_test() {
-  json.nullable(None, json.int)
+  json.nullable(None, the: json.int)
   |> should_encode("null")
 }
 

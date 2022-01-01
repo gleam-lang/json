@@ -47,11 +47,9 @@ pub external fn null() -> Json =
   "thoas_encode" "null"
 
 // TODO: document
-// TODO: test
-// TODO: change argument order
-pub fn nullable(input: Option(a), inner: fn(a) -> Json) -> Json {
+pub fn nullable(input: Option(a), the inner_type: fn(a) -> Json) -> Json {
   case input {
-    Some(value) -> inner(value)
+    Some(value) -> inner_type(value)
     None -> null()
   }
 }

@@ -7,6 +7,7 @@
   `thoas` Erlang JSON library.
 - The `encode` function has been replaced by `to_string` and `to_string_builder`
   functions.
+- The `nullable` function gains argument labels.
 
 ## v0.1.0 - 2020-07-30
 
