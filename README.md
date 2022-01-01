@@ -13,13 +13,13 @@ pub type Cat {
 }
 
 pub fn cat_to_json(cat: Cat) -> String {
-  let data = object([
+  object([
     #("name", string(cat.name)),
     #("lives", int(9),
     #("flaws", null()),
     #("nicknames", list([string("Kitty"), string("Sweetie")])),
   ])
-  json.encode(data)
+  |> json.to_string
 }
 ```
 
