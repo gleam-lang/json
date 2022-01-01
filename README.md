@@ -2,6 +2,17 @@
 
 Work with JSON in Gleam!
 
+Under the hood library uses [Thoas](https://github.com/lpil/thoas/), the fastest
+and most memory efficient pure Erlang JSON encoder/decoder.
+
+## Installation
+
+Add this package to your Gleam project.
+
+```shell
+gleam add gleam_json
+```
+
 ### Encoding
 
 ```rust
@@ -51,12 +62,4 @@ pub type MyError {
   InvalidJson(json.DecodeError)
   InvalidFormat(dynamic.DecodeError)
 }
-```
-
-## Installation
-
-Add this package to your Gleam project.
-
-```shell
-gleam add gleam_json
 ```
