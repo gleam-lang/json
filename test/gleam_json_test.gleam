@@ -1,6 +1,7 @@
 import gleam/dynamic
-import gleam/json
+import gleam/json.{Json}
 import gleam/option.{None, Some}
+import gleam/string_builder
 import gleam/result
 import gleeunit
 import gleeunit/should
@@ -27,34 +28,41 @@ pub fn decode_unexpected_byte_test() {
 
 pub fn encode_string_test() {
   json.string("hello")
-  |> json.to_string()
-  |> should.equal("\"hello\"")
+  |> should_encode("\"hello\"")
 }
 
 pub fn encode_null_test() {
   json.null()
-  |> json.to_string()
-  |> should.equal("null")
+  |> should_encode("null")
 }
 
 pub fn encode_object_test() {
   json.object([#("foo", json.int(5))])
-  |> json.to_string()
-  |> should.equal("{\"foo\":5}")
+  |> should_encode("{\"foo\":5}")
 }
 
 pub fn encode_list_test() {
   json.list([json.int(5), json.int(6)])
-  |> json.to_string()
-  |> should.equal("[5,6]")
+  |> should_encode("[5,6]")
 }
 
-pub fn encode_nullable_test() {
+pub fn encode_nullable_some_test() {
   json.nullable(Some(5), json.int)
-  |> json.to_string()
-  |> should.equal("5")
+  |> should_encode("5")
+}
 
+pub fn encode_nullable_none_test() {
   json.nullable(None, json.int)
+  |> should_encode("null")
+}
+
+fn should_encode(data: Json, expected: String) {
+  data
   |> json.to_string()
-  |> should.equal("null")
+  |> should.equal(expected)
+
+  data
+  |> json.to_string_builder
+  |> string_builder.to_string
+  |> should.equal(json.to_string(data))
 }

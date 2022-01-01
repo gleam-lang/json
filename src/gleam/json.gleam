@@ -13,22 +13,18 @@ pub type DecodeError {
 }
 
 // TODO: document
-// TODO: test
 pub external fn decode(String) -> Result(Dynamic, DecodeError) =
   "thoas" "decode"
 
 // TODO: document
-// TODO: test
 pub external fn to_string(Json) -> String =
   "gleam_json_ffi" "json_to_string"
 
 // TODO: document
-// TODO: test
-external fn to_string_builder(Json) -> String =
-  "thoas_encode" "encode"
+pub external fn to_string_builder(Json) -> StringBuilder =
+  "gleam_json_ffi" "json_to_iodata"
 
 // TODO: document
-// TODO: test
 pub external fn string(input: String) -> Json =
   "thoas_encode" "string"
 
@@ -38,7 +34,6 @@ pub external fn bool(input: Bool) -> Json =
   "thoas_encode" "boolean"
 
 // TODO: document
-// TODO: test
 pub external fn int(input: Int) -> Json =
   "thoas_encode" "integer"
 
