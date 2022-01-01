@@ -41,18 +41,24 @@ pub fn encode_object_test() {
   |> should_encode("{\"foo\":5}")
 }
 
-pub fn encode_list_test() {
-  json.list([json.int(5), json.int(6)])
+pub fn encode_array_test() {
+  [5, 6, 1, 4]
+  |> json.array(of: json.int)
+  |> should_encode("[5,6,1,4]")
+}
+
+pub fn encode_preprocessed_array_test() {
+  json.preprocessed_array([json.int(5), json.int(6)])
   |> should_encode("[5,6]")
 }
 
 pub fn encode_nullable_some_test() {
-  json.nullable(Some(5), the: json.int)
+  json.nullable(Some(5), of: json.int)
   |> should_encode("5")
 }
 
 pub fn encode_nullable_none_test() {
-  json.nullable(None, the: json.int)
+  json.nullable(None, of: json.int)
   |> should_encode("null")
 }
 

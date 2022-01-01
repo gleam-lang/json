@@ -1,4 +1,5 @@
 import gleam/map
+import gleam/list
 import gleam/result
 import gleam/option.{None, Option, Some}
 import gleam/dynamic.{Dynamic}
@@ -37,17 +38,13 @@ pub external fn bool(input: Bool) -> Json =
 pub external fn int(input: Int) -> Json =
   "thoas_encode" "integer"
 
-type Null {
-  Null
-}
-
 // TODO: document
 // TODO: test
 pub external fn null() -> Json =
   "thoas_encode" "null"
 
 // TODO: document
-pub fn nullable(input: Option(a), the inner_type: fn(a) -> Json) -> Json {
+pub fn nullable(from input: Option(a), of inner_type: fn(a) -> Json) -> Json {
   case input {
     Some(value) -> inner_type(value)
     None -> null()
@@ -61,7 +58,13 @@ pub external fn object(entries: List(#(String, Json))) -> Json =
 
 // TODO: document
 // TODO: test
-// TODO: rename to array
-// TODO: make into a mapping function?
-pub external fn list(entries: List(Json)) -> Json =
+pub fn array(from entries: List(a), of inner_type: fn(a) -> Json) -> Json {
+  entries
+  |> list.map(inner_type)
+  |> preprocessed_array
+}
+
+// TODO: document
+// TODO: test
+pub external fn preprocessed_array(from: List(Json)) -> Json =
   "thoas_encode" "non_recursive_array"
