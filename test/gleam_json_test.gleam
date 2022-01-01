@@ -1,9 +1,9 @@
 import gleam/dynamic
+import gleam/json
 import gleam/option.{None, Some}
 import gleam/result
-import gleam/json
-import gleeunit/should
 import gleeunit
+import gleeunit/should
 
 pub fn main() {
   gleeunit.main()
@@ -19,24 +19,30 @@ pub fn decode_test() {
   |> should.equal(Error(Nil))
 }
 
-pub fn encode_test() {
+pub fn encode_string_test() {
   json.string("hello")
-  |> json.encode()
+  |> json.to_string()
   |> should.equal("\"hello\"")
+}
 
+pub fn encode_null_test() {
   json.null()
-  |> json.encode()
+  |> json.to_string()
   |> should.equal("null")
+}
 
+pub fn encode_object_test() {
   json.object([#("foo", json.int(5))])
-  |> json.encode()
+  |> json.to_string()
   |> should.equal("{\"foo\":5}")
+}
 
+pub fn encode_nullable_test() {
   json.nullable(Some(5), json.int)
-  |> json.encode()
+  |> json.to_string()
   |> should.equal("5")
 
   json.nullable(None, json.int)
-  |> json.encode()
+  |> json.to_string()
   |> should.equal("null")
 }

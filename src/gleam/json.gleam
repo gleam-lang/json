@@ -1,75 +1,74 @@
-import gleam/dynamic.{Dynamic}
 import gleam/map
-import gleam/option.{Option}
 import gleam/result
-import gleam/json/types
+import gleam/option.{None, Option, Some}
+import gleam/dynamic.{Dynamic}
+import gleam/string_builder.{StringBuilder}
 
-pub type Json =
-  types.Json
+pub external type Json
 
-external fn jsone_decode(String) -> types.DecodeResult =
-  "jsone_decode" "decode"
-
-pub fn decode(encoded: String) -> Result(Json, Dynamic) {
-  case jsone_decode(encoded) {
-    types.Ok(json, _rest) -> Ok(json)
-    types.Error(types.Badarg(reason)) -> Error(reason)
-  }
+pub type DecodeError {
+  UnexpectedEndOfInput
+  UnexpectedByte(byte: String, position: Int)
+  UnexpectedSequence(byte: String, position: Int)
 }
 
-external fn jsone_encode(Json) -> Result(String, types.DecodeResult) =
-  "jsone_encode" "encode"
+// TODO: document
+// TODO: test
+pub external fn decode(String) -> Result(Dynamic, DecodeError) =
+  "thoas" "decode"
 
-pub fn encode(json: Json) -> String {
-  // The encoder only error if input is invalid, i.e. a PID.
-  // This cannot happen when passing in the the Json type.
-  assert Ok(encoded) = jsone_encode(json)
-  encoded
-}
+// TODO: document
+// TODO: test
+pub external fn to_string(Json) -> String =
+  "gleam_json_ffi" "json_to_string"
 
-pub fn string(input: String) -> Json {
-  input
-  |> dynamic.from()
-  |> dynamic.unsafe_coerce()
-}
+// TODO: document
+// TODO: test
+external fn to_string_builder(Json) -> String =
+  "thoas_encode" "encode"
 
-pub fn bool(input: Bool) -> Json {
-  input
-  |> dynamic.from()
-  |> dynamic.unsafe_coerce()
-}
+// TODO: document
+// TODO: test
+pub external fn string(input: String) -> Json =
+  "thoas_encode" "string"
 
-pub fn int(input: Int) -> Json {
-  input
-  |> dynamic.from()
-  |> dynamic.unsafe_coerce()
-}
+// TODO: document
+// TODO: test
+pub external fn bool(input: Bool) -> Json =
+  "thoas_encode" "boolean"
+
+// TODO: document
+// TODO: test
+pub external fn int(input: Int) -> Json =
+  "thoas_encode" "integer"
 
 type Null {
   Null
 }
 
-pub fn null() -> Json {
-  Null
-  |> dynamic.from()
-  |> dynamic.unsafe_coerce()
+// TODO: document
+// TODO: test
+pub external fn null() -> Json =
+  "thoas_encode" "null"
+
+// TODO: document
+// TODO: test
+// TODO: change argument order
+pub fn nullable(input: Option(a), inner: fn(a) -> Json) -> Json {
+  case input {
+    Some(value) -> inner(value)
+    None -> null()
+  }
 }
 
-pub fn nullable(input: Option(a), mapper: fn(a) -> Json) -> Json {
-  input
-  |> option.map(mapper)
-  |> option.unwrap(null())
-}
+// TODO: document
+// TODO: test
+pub external fn object(entries: List(#(String, Json))) -> Json =
+  "thoas_encode" "non_recursive_object"
 
-pub fn object(entries: List(#(String, Json))) -> Json {
-  entries
-  |> map.from_list()
-  |> dynamic.from()
-  |> dynamic.unsafe_coerce()
-}
-
-pub fn list(input: List(Json)) -> Json {
-  input
-  |> dynamic.from()
-  |> dynamic.unsafe_coerce()
-}
+// TODO: document
+// TODO: test
+// TODO: rename to array
+// TODO: make into a mapping function?
+pub external fn list(entries: List(Json)) -> Json =
+  "thoas_encode" "non_recursive_array"

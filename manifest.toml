@@ -4,10 +4,10 @@
 packages = [
   { name = "gleam_stdlib", version = "0.18.1", build_tools = ["gleam"], requirements = [], otp_app = "gleam_stdlib", source = "hex", outer_checksum = "763ECD87D54D08755EE4C8551720D122FDCA47F61D1CA8AF23B19A90395A7468" },
   { name = "gleeunit", version = "0.5.1", build_tools = ["gleam"], requirements = ["gleam_stdlib"], otp_app = "gleeunit", source = "hex", outer_checksum = "F7FA7477D930178C1E59519DBDB5E086BE3A6B65F015B67DA94D30A323062154" },
-  { name = "jsone", version = "1.7.0", build_tools = ["rebar3"], requirements = [], otp_app = "jsone", source = "hex", outer_checksum = "A3A33712EE6BC8BE10CFA21C7C425A299DE4C5A8533F9F931E577A6D0E8F5DBD" },
+  { name = "thoas", version = "0.2.0", build_tools = ["rebar3"], requirements = [], otp_app = "thoas", source = "hex", outer_checksum = "630AAEE57FB3FDE201578E787259E15E788A27733D49DE8DCCE1354DB1885B8D" },
 ]
 
 [requirements]
 gleam_stdlib = "~> 0.18"
 gleeunit = "~> 0.5"
-jsone = "~> 1.7"
+thoas = "~> 0.2"
