@@ -3,6 +3,8 @@ version = "0.2.0"
 licences = ["Apache-2.0"]
 description = "Work with JSON in Gleam"
 
+# target = "javascript"
+
 repository = { type = "github", user = "gleam", repo = "json" }
 links = [
   { title = "Website", href = "https://gleam.run" },

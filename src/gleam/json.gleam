@@ -29,7 +29,7 @@ pub type DecodeError {
 /// ```
 ///
 pub external fn decode(String) -> Result(Dynamic, DecodeError) =
-  "thoas" "decode"
+  "gleam_json_ffi" "decode"
 
 /// Convert a JSON value into a string.
 ///
@@ -72,7 +72,7 @@ pub external fn to_string_builder(Json) -> StringBuilder =
 /// ```
 ///
 pub external fn string(input: String) -> Json =
-  "thoas_encode" "string"
+  "gleam_json_ffi" "string"
 
 /// Encode a bool into JSON.
 ///
@@ -84,7 +84,7 @@ pub external fn string(input: String) -> Json =
 /// ```
 ///
 pub external fn bool(input: Bool) -> Json =
-  "thoas_encode" "boolean"
+  "gleam_json_ffi" "bool"
 
 /// Encode an int into JSON.
 ///
@@ -96,7 +96,7 @@ pub external fn bool(input: Bool) -> Json =
 /// ```
 ///
 pub external fn int(input: Int) -> Json =
-  "thoas_encode" "integer"
+  "gleam_json_ffi" "int"
 
 /// Encode an float into JSON.
 ///
@@ -108,7 +108,7 @@ pub external fn int(input: Int) -> Json =
 /// ```
 ///
 pub external fn float(input: Float) -> Json =
-  "thoas_encode" "float"
+  "gleam_json_ffi" "float"
 
 /// The JSON value null.
 ///
@@ -120,7 +120,7 @@ pub external fn float(input: Float) -> Json =
 /// ```
 ///
 pub external fn null() -> Json =
-  "thoas_encode" "null"
+  "gleam_json_ffi" "null"
 
 /// Encode an optional value into JSON, using null if it the `None` variant.
 ///
@@ -156,7 +156,7 @@ pub fn nullable(from input: Option(a), of inner_type: fn(a) -> Json) -> Json {
 /// ```
 ///
 pub external fn object(entries: List(#(String, Json))) -> Json =
-  "thoas_encode" "non_recursive_object"
+  "gleam_json_ffi" "object"
 
 /// Encode a list into a JSON array.
 ///
@@ -183,4 +183,4 @@ pub fn array(from entries: List(a), of inner_type: fn(a) -> Json) -> Json {
 /// ```
 ///
 pub external fn preprocessed_array(from: List(Json)) -> Json =
-  "thoas_encode" "non_recursive_array"
+  "gleam_json_ffi" "array"
