@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.3.0 - 2022-01-09
+
+- The `decode` function now takes a `gleam/dynamic.Decoder`.
+
 ## v0.2.0 - 2022-01-01
 
 - Converted to use the Gleam build tool.
