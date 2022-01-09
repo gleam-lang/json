@@ -43,7 +43,7 @@ import gleam/dynamic.{field, list, int, string}
 import gleam/result
 
 pub fn cat_from_json(json_string: String) -> Result<Cat, json.DecodeError> {
-  let cat_decoder = dynamic.decode2(
+  let cat_decoder = dynamic.decode3(
     Cat,
     field("name", of: string),
     field("lives", of: int),
