@@ -17,7 +17,6 @@ gleam add gleam_json
 
 ```rust
 import myapp.{Cat}
-import gleam/list
 import gleam/json.{object, string, list, int, null}
 
 pub fn cat_to_json(cat: Cat) -> String {
@@ -40,7 +39,6 @@ JSON is decoded into a `Dynamic` value which can be decoded using the
 import myapp.{Cat}
 import gleam/json
 import gleam/dynamic.{field, list, int, string}
-import gleam/result
 
 pub fn cat_from_json(json_string: String) -> Result<Cat, json.DecodeError> {
   let cat_decoder = dynamic.decode3(
