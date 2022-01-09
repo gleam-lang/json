@@ -11,6 +11,7 @@ pub type DecodeError {
   UnexpectedEndOfInput
   UnexpectedByte(byte: String, position: Int)
   UnexpectedSequence(byte: String, position: Int)
+  UnexpectedFormat(List(dynamic.DecodeError))
 }
 
 /// Decode a JSON string into dynamically typed data which can be decoded into
@@ -19,16 +20,31 @@ pub type DecodeError {
 /// ## Examples
 ///
 /// ```gleam
-/// > decode("[1,2,3]")
-/// Ok(dynamic.from([1, 2, 3]))
+/// > decode("[1,2,3]", dynamic.list(of: dynamic.int))
+/// Ok([1, 2, 3])
 /// ```
 ///
 /// ```gleam
-/// > decode("[")
+/// > decode("[", into: dynamic.list(of: dynamic.int))
 /// Error(UnexpectedEndOfInput)
 /// ```
 ///
-pub external fn decode(String) -> Result(Dynamic, DecodeError) =
+/// ```gleam
+/// > decode("1", into: dynamic.string)
+/// Error(UnexpectedFormat([dynamic.DecodeError("String", "Int", [])]))
+/// ```
+///
+pub fn decode(
+  from json: String,
+  using decoder: dynamic.Decoder(t),
+) -> Result(t, DecodeError) {
+  try dynamic_value = decode_to_dynamic(json)
+  dynamic_value
+  |> decoder
+  |> result.map_error(UnexpectedFormat)
+}
+
+external fn decode_to_dynamic(String) -> Result(Dynamic, DecodeError) =
   "gleam_json_ffi" "decode"
 
 /// Convert a JSON value into a string.

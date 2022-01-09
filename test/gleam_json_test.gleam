@@ -11,19 +11,25 @@ pub fn main() {
 }
 
 pub fn decode_test() {
-  json.decode("5")
-  |> result.map(dynamic.from)
-  |> should.equal(Ok(dynamic.from(5)))
+  json.decode(from: "5", using: dynamic.int)
+  |> should.equal(Ok(5))
 }
 
 pub fn decode_empty_test() {
-  json.decode("")
+  json.decode(from: "", using: dynamic.int)
   |> should.equal(Error(json.UnexpectedEndOfInput))
 }
 
 pub fn decode_unexpected_byte_test() {
-  json.decode("[}")
+  json.decode(from: "[}", using: dynamic.int)
   |> should.equal(Error(json.UnexpectedByte("0x7D", 1)))
+}
+
+pub fn decode_unexpected_format_test() {
+  json.decode(from: "[]", using: dynamic.int)
+  |> should.equal(Error(json.UnexpectedFormat([
+    dynamic.DecodeError(expected: "Int", found: "List", path: []),
+  ])))
 }
 
 pub fn encode_string_test() {

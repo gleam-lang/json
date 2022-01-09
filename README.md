@@ -23,9 +23,9 @@ import gleam/json.{object, string, list, int, null}
 pub fn cat_to_json(cat: Cat) -> String {
   object([
     #("name", string(cat.name)),
-    #("lives", int(9),
+    #("lives", int(cat.lives),
     #("flaws", null()),
-    #("nicknames", array(["Kitty", "Sweetie"], of: string)),
+    #("nicknames", array(cat.nicknames, of: string)),
   ])
   |> json.to_string
 }
@@ -39,27 +39,17 @@ JSON is decoded into a `Dynamic` value which can be decoded using the
 ```rust
 import myapp.{Cat}
 import gleam/json
-import gleam/dynamic
+import gleam/dynamic.{field, list, int, string}
 import gleam/result
 
-pub fn cat_from_json(json: String) -> Result<Cat, MyError> {
-  try data = 
-    json.decode(encoded)
-    |> result.map_error(InvalidJson)
+pub fn cat_from_json(json_string: String) -> Result<Cat, json.DecodeError> {
+  let cat_decoder = dynamic.decode2(
+    Cat,
+    field("name", of: string),
+    field("lives", of: int),
+    field("nicknames", of: list(string)),
+  )
 
-  let data = dynamic.from(data)
-  try cat = {
-    try name = dynamic.field(data, "name")
-    try name = dynamic.string(name)
-    Ok(Cat(name))
-  }
-  |> result.map_error(InvalidFormat)
-
-  Ok(cat)
-}
-
-pub type MyError {
-  InvalidJson(json.DecodeError)
-  InvalidFormat(dynamic.DecodeError)
+  json.decode(from: json_string, using: cat_decoder)
 }
 ```
