@@ -17,7 +17,7 @@ gleam add gleam_json
 
 ```rust
 import myapp.{Cat}
-import gleam/json.{object, string, list, int, null}
+import gleam/json.{object, string, array, int, null}
 
 pub fn cat_to_json(cat: Cat) -> String {
   object([
