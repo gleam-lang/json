@@ -3,7 +3,7 @@ version = "0.3.0"
 licences = ["Apache-2.0"]
 description = "Work with JSON in Gleam"
 
-repository = { type = "github", user = "gleam", repo = "json" }
+repository = { type = "github", user = "gleam-lang", repo = "json" }
 links = [
   { title = "Website", href = "https://gleam.run" },
   { title = "Sponsor", href = "https://github.com/sponsors/lpil" },
