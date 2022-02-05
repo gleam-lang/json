@@ -32,6 +32,28 @@ pub fn decode_unexpected_format_test() {
   ])))
 }
 
+pub fn decode_bits_test() {
+  json.decode_bits(from: <<"5":utf8>>, using: dynamic.int)
+  |> should.equal(Ok(5))
+}
+
+pub fn decode_bits_empty_test() {
+  json.decode_bits(from: <<"":utf8>>, using: dynamic.int)
+  |> should.equal(Error(json.UnexpectedEndOfInput))
+}
+
+pub fn decode_bits_unexpected_byte_test() {
+  json.decode_bits(from: <<"[}":utf8>>, using: dynamic.int)
+  |> should.equal(Error(json.UnexpectedByte("0x7D", 1)))
+}
+
+pub fn decode_bits_unexpected_format_test() {
+  json.decode_bits(from: <<"[]":utf8>>, using: dynamic.int)
+  |> should.equal(Error(json.UnexpectedFormat([
+    dynamic.DecodeError(expected: "Int", found: "List", path: []),
+  ])))
+}
+
 pub fn encode_string_test() {
   json.string("hello")
   |> should_encode("\"hello\"")

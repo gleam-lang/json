@@ -1,6 +1,7 @@
 import gleam/map
 import gleam/list
 import gleam/result
+import gleam/bit_string
 import gleam/option.{None, Option, Some}
 import gleam/dynamic.{Dynamic}
 import gleam/string_builder.{StringBuilder}
@@ -38,13 +39,40 @@ pub fn decode(
   from json: String,
   using decoder: dynamic.Decoder(t),
 ) -> Result(t, DecodeError) {
+  let bits = bit_string.from_string(json)
+  decode_bits(bits, decoder)
+}
+
+/// Decode a JSON bit string into dynamically typed data which can be decoded
+/// into typed data with the `gleam/dynamic` module.
+///
+/// ## Examples
+///
+/// ```gleam
+/// > decode_bits(<<"[1,2,3]">>, dynamic.list(of: dynamic.int))
+/// Ok([1, 2, 3])
+/// ```
+///
+/// ```gleam
+/// > decode_bits(<<"[">>, into: dynamic.list(of: dynamic.int))
+/// Error(UnexpectedEndOfInput)
+/// ```
+///
+/// ```gleam
+/// > decode_bits("<<1">>, into: dynamic.string)
+/// Error(UnexpectedFormat([dynamic.DecodeError("String", "Int", [])]))
+/// ```
+///
+pub fn decode_bits(
+  from json: BitString,
+  using decoder: dynamic.Decoder(t),
+) -> Result(t, DecodeError) {
   try dynamic_value = decode_to_dynamic(json)
-  dynamic_value
-  |> decoder
+  decoder(dynamic_value)
   |> result.map_error(UnexpectedFormat)
 }
 
-external fn decode_to_dynamic(String) -> Result(Dynamic, DecodeError) =
+external fn decode_to_dynamic(BitString) -> Result(Dynamic, DecodeError) =
   "gleam_json_ffi" "decode"
 
 /// Convert a JSON value into a string.

@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.4.0 - Unreleased
+
+- The `decode_bits` function has been added.
+
 ## v0.3.0 - 2022-01-09
 
 - The `decode` function now takes a `gleam/dynamic.Decoder`.
