@@ -1,6 +1,6 @@
 # Changelog
 
-## v0.4.0 - Unreleased
+## v0.4.0 - 2022-02-05
 
 - The `decode_bits` function has been added.
 
