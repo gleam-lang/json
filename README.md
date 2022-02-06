@@ -17,14 +17,14 @@ gleam add gleam_json
 
 ```rust
 import myapp.{Cat}
-import gleam/json.{object, string, mapped_array, int, null}
+import gleam/json.{object, string, array, int, null}
 
 pub fn cat_to_json(cat: Cat) -> String {
   object([
     #("name", string(cat.name)),
     #("lives", int(cat.lives),
     #("flaws", null()),
-    #("nicknames", mapped_array(cat.nicknames, of: string)),
+    #("nicknames", array(cat.nicknames, of: string)),
   ])
   |> json.to_string
 }
