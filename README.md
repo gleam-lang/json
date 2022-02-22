@@ -15,7 +15,7 @@ gleam add gleam_json
 
 ### Encoding
 
-```rust
+```gleam
 import myapp.{Cat}
 import gleam/json.{object, string, array, int, null}
 
@@ -35,7 +35,7 @@ pub fn cat_to_json(cat: Cat) -> String {
 JSON is decoded into a `Dynamic` value which can be decoded using the
 `gleam/dynamic` module from the Gleam standard library.
 
-```rust
+```gleam
 import myapp.{Cat}
 import gleam/json
 import gleam/dynamic.{field, list, int, string}
