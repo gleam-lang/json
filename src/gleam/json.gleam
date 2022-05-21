@@ -1,4 +1,3 @@
-import gleam/map
 import gleam/list
 import gleam/result
 import gleam/bit_string
@@ -72,8 +71,19 @@ pub fn decode_bits(
   |> result.map_error(UnexpectedFormat)
 }
 
-external fn decode_to_dynamic(BitString) -> Result(Dynamic, DecodeError) =
-  "gleam_json_ffi" "decode"
+fn decode_to_dynamic(bit_string: BitString) -> Result(Dynamic, DecodeError) {
+  do_decode_to_dynamic(bit_string)
+}
+
+if erlang {
+  external fn do_decode_to_dynamic(BitString) -> Result(Dynamic, DecodeError) =
+    "gleam_json_ffi" "decode"
+}
+
+if javascript {
+  external fn do_decode_to_dynamic(BitString) -> Result(Dynamic, DecodeError) =
+    "../gleam_json_ffi.mjs" "decode"
+}
 
 /// Convert a JSON value into a string.
 ///
@@ -87,8 +97,19 @@ external fn decode_to_dynamic(BitString) -> Result(Dynamic, DecodeError) =
 /// "[1,2,3]"
 /// ```
 ///
-pub external fn to_string(Json) -> String =
-  "gleam_json_ffi" "json_to_string"
+pub fn to_string(json: Json) -> String {
+  do_to_string(json)
+}
+
+if erlang {
+  external fn do_to_string(Json) -> String =
+    "gleam_json_ffi" "json_to_string"
+}
+
+if javascript {
+  external fn do_to_string(Json) -> String =
+    "../gleam_json_ffi.mjs" "json_to_string"
+}
 
 /// Convert a JSON value into a string builder.
 ///
@@ -103,8 +124,19 @@ pub external fn to_string(Json) -> String =
 /// string_builder.from_string("[1,2,3]")
 /// ```
 ///
-pub external fn to_string_builder(Json) -> StringBuilder =
-  "gleam_json_ffi" "json_to_iodata"
+pub fn to_string_builder(json: Json) -> StringBuilder {
+  do_to_string_builder(json)
+}
+
+if erlang {
+  external fn do_to_string_builder(Json) -> StringBuilder =
+    "gleam_json_ffi" "json_to_iodata"
+}
+
+if javascript {
+  external fn do_to_string_builder(Json) -> StringBuilder =
+    "../gleam_json_ffi.mjs" "json_to_string"
+}
 
 /// Encode a string into JSON, using normal JSON escaping.
 ///
@@ -115,8 +147,19 @@ pub external fn to_string_builder(Json) -> StringBuilder =
 /// "\"Hello!\""
 /// ```
 ///
-pub external fn string(input: String) -> Json =
-  "gleam_json_ffi" "string"
+pub fn string(input: String) -> Json {
+  do_string(input)
+}
+
+if erlang {
+  external fn do_string(String) -> Json =
+    "gleam_json_ffi" "string"
+}
+
+if javascript {
+  external fn do_string(String) -> Json =
+    "../gleam_json_ffi.mjs" "identity"
+}
 
 /// Encode a bool into JSON.
 ///
@@ -127,8 +170,19 @@ pub external fn string(input: String) -> Json =
 /// "false"
 /// ```
 ///
-pub external fn bool(input: Bool) -> Json =
-  "gleam_json_ffi" "bool"
+pub fn bool(input: Bool) -> Json {
+  do_bool(input)
+}
+
+if erlang {
+  external fn do_bool(Bool) -> Json =
+    "gleam_json_ffi" "bool"
+}
+
+if javascript {
+  external fn do_bool(Bool) -> Json =
+    "../gleam_json_ffi.mjs" "identity"
+}
 
 /// Encode an int into JSON.
 ///
@@ -139,8 +193,19 @@ pub external fn bool(input: Bool) -> Json =
 /// "50"
 /// ```
 ///
-pub external fn int(input: Int) -> Json =
-  "gleam_json_ffi" "int"
+pub fn int(input: Int) -> Json {
+  do_int(input)
+}
+
+if erlang {
+  external fn do_int(Int) -> Json =
+    "gleam_json_ffi" "int"
+}
+
+if javascript {
+  external fn do_int(Int) -> Json =
+    "../gleam_json_ffi.mjs" "identity"
+}
 
 /// Encode an float into JSON.
 ///
@@ -151,8 +216,19 @@ pub external fn int(input: Int) -> Json =
 /// "4.7"
 /// ```
 ///
-pub external fn float(input: Float) -> Json =
-  "gleam_json_ffi" "float"
+pub fn float(input: Float) -> Json {
+  do_float(input)
+}
+
+if erlang {
+  external fn do_float(input: Float) -> Json =
+    "gleam_json_ffi" "float"
+}
+
+if javascript {
+  external fn do_float(input: Float) -> Json =
+    "../gleam_json_ffi.mjs" "identity"
+}
 
 /// The JSON value null.
 ///
@@ -163,8 +239,19 @@ pub external fn float(input: Float) -> Json =
 /// "null"
 /// ```
 ///
-pub external fn null() -> Json =
-  "gleam_json_ffi" "null"
+pub fn null() -> Json {
+  do_null()
+}
+
+if erlang {
+  external fn do_null() -> Json =
+    "gleam_json_ffi" "null"
+}
+
+if javascript {
+  external fn do_null() -> Json =
+    "../gleam_json_ffi.mjs" "do_null"
+}
 
 /// Encode an optional value into JSON, using null if it the `None` variant.
 ///
@@ -199,8 +286,19 @@ pub fn nullable(from input: Option(a), of inner_type: fn(a) -> Json) -> Json {
 /// "{\"game\":\"Pac-Mac\",\"score\":3333360}"
 /// ```
 ///
-pub external fn object(entries: List(#(String, Json))) -> Json =
-  "gleam_json_ffi" "object"
+pub fn object(entries: List(#(String, Json))) -> Json {
+  do_object(entries)
+}
+
+if erlang {
+  external fn do_object(entries: List(#(String, Json))) -> Json =
+    "gleam_json_ffi" "object"
+}
+
+if javascript {
+  external fn do_object(entries: List(#(String, Json))) -> Json =
+    "../gleam_json_ffi.mjs" "object_from"
+}
 
 /// Encode a list into a JSON array.
 ///
@@ -226,5 +324,16 @@ pub fn array(from entries: List(a), of inner_type: fn(a) -> Json) -> Json {
 /// "[1, 2.0, \"3\"]"
 /// ```
 ///
-pub external fn preprocessed_array(from: List(Json)) -> Json =
-  "gleam_json_ffi" "array"
+pub fn preprocessed_array(from: List(Json)) -> Json {
+  do_preprocessed_array(from)
+}
+
+if erlang {
+  external fn do_preprocessed_array(from: List(Json)) -> Json =
+    "gleam_json_ffi" "array"
+}
+
+if javascript {
+  external fn do_preprocessed_array(from: List(Json)) -> Json =
+    "../gleam_json_ffi.mjs" "array"
+}
