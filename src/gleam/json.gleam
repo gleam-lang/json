@@ -158,7 +158,7 @@ if erlang {
 
 if javascript {
   external fn do_string(String) -> Json =
-    "../gleam_json_ffi.mjs" "identity"
+    "../gleam_json_ffi.mjs" "string"
 }
 
 /// Encode a bool into JSON.
@@ -181,7 +181,7 @@ if erlang {
 
 if javascript {
   external fn do_bool(Bool) -> Json =
-    "../gleam_json_ffi.mjs" "identity"
+    "../gleam_json_ffi.mjs" "bool"
 }
 
 /// Encode an int into JSON.
@@ -204,7 +204,7 @@ if erlang {
 
 if javascript {
   external fn do_int(Int) -> Json =
-    "../gleam_json_ffi.mjs" "identity"
+    "../gleam_json_ffi.mjs" "int"
 }
 
 /// Encode an float into JSON.
@@ -227,7 +227,7 @@ if erlang {
 
 if javascript {
   external fn do_float(input: Float) -> Json =
-    "../gleam_json_ffi.mjs" "identity"
+    "../gleam_json_ffi.mjs" "float"
 }
 
 /// The JSON value null.
