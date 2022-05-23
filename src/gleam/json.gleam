@@ -38,8 +38,31 @@ pub fn decode(
   from json: String,
   using decoder: dynamic.Decoder(t),
 ) -> Result(t, DecodeError) {
-  let bits = bit_string.from_string(json)
-  decode_bits(bits, decoder)
+  do_decode(from: json, using: decoder)
+}
+
+if erlang {
+  fn do_decode(
+    from json: String,
+    using decoder: dynamic.Decoder(t),
+  ) -> Result(t, DecodeError) {
+    let bits = bit_string.from_string(json)
+    decode_bits(bits, decoder)
+  }
+}
+
+if javascript {
+  fn do_decode(
+    from json: String,
+    using decoder: dynamic.Decoder(t),
+  ) -> Result(t, DecodeError) {
+    try dynamic_value = decode_string(json)
+    decoder(dynamic_value)
+    |> result.map_error(UnexpectedFormat)
+  }
+
+  external fn decode_string(String) -> Result(Dynamic, DecodeError) =
+    "../gleam_json_ffi.mjs" "decode_string"
 }
 
 /// Decode a JSON bit string into dynamically typed data which can be decoded
@@ -158,7 +181,7 @@ if erlang {
 
 if javascript {
   external fn do_string(String) -> Json =
-    "../gleam_json_ffi.mjs" "string"
+    "../gleam_json_ffi.mjs" "identity"
 }
 
 /// Encode a bool into JSON.
@@ -181,7 +204,7 @@ if erlang {
 
 if javascript {
   external fn do_bool(Bool) -> Json =
-    "../gleam_json_ffi.mjs" "bool"
+    "../gleam_json_ffi.mjs" "identity"
 }
 
 /// Encode an int into JSON.
@@ -204,7 +227,7 @@ if erlang {
 
 if javascript {
   external fn do_int(Int) -> Json =
-    "../gleam_json_ffi.mjs" "int"
+    "../gleam_json_ffi.mjs" "identity"
 }
 
 /// Encode an float into JSON.
@@ -227,7 +250,7 @@ if erlang {
 
 if javascript {
   external fn do_float(input: Float) -> Json =
-    "../gleam_json_ffi.mjs" "float"
+    "../gleam_json_ffi.mjs" "identity"
 }
 
 /// The JSON value null.
@@ -297,7 +320,7 @@ if erlang {
 
 if javascript {
   external fn do_object(entries: List(#(String, Json))) -> Json =
-    "../gleam_json_ffi.mjs" "object_from"
+    "../gleam_json_ffi.mjs" "object"
 }
 
 /// Encode a list into a JSON array.
