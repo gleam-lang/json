@@ -6,8 +6,12 @@ export function json_to_string(json) {
   return JSON.stringify(json)
 }
 
-export function object_from(entries) {
+export function object(entries) {
   return Object.fromEntries(entries)
+}
+
+export function identity(x) {
+  return x
 }
 
 export function array(list) {
@@ -18,28 +22,20 @@ export function do_null() {
   return null
 }
 
-export function string(x) {
-  return json_to_string(x)
-}
-
-export function int(x) {
-  return parseInt(json_to_string(x), 10)
-}
-
-export function float(x) {
-  return parseFloat(json_to_string(x), 10)
-}
-
-export function bool(x) {
-  return Boolean(x)
-}
-
-
 export function decode(bit_string) {
   const stringResult = bit_string_to_string(bit_string)
   if (!stringResult.isOk()) return stringResult
   try {
     const result = JSON.parse(stringResult[0])
+    return new Ok(result)
+  } catch (err) {
+    return new Error(getJsonDecodeError(err))
+  }
+}
+
+export function decode_string_to_dynamic(string) {
+  try {
+    const result = JSON.parse(string)
     return new Ok(result)
   } catch (err) {
     return new Error(getJsonDecodeError(err))
