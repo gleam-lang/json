@@ -1,5 +1,4 @@
 import { Ok, Error } from './gleam.mjs'
-import { bit_string_to_string } from '../../gleam_stdlib/dist/gleam_stdlib.mjs'
 import { UnexpectedByte, UnexpectedEndOfInput } from './gleam/json.mjs'
 
 export function json_to_string(json) {
@@ -38,7 +37,7 @@ function getJsonDecodeError(stdErr) {
 }
 
 function isUnexpectedEndOfInput(err) {
-  return err.message === 'Unexpected end of JSON input'
+  return err.message.includes('Unexpected end') || err.message.includes('Unexpected EOF')
 }
 
 const unexpectedByteRegex = /Unexpected token (.) in JSON at position (\d+)/
