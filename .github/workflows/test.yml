@@ -17,4 +17,5 @@ jobs:
           elixir-version: "1.13.1"
           gleam-version: "0.20.0"
       - run: gleam test
+      - run: gleam test --target javascript
       - run: gleam format --check src test
