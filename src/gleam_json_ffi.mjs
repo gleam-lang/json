@@ -22,18 +22,7 @@ export function do_null() {
   return null
 }
 
-export function decode(bit_string) {
-  const stringResult = bit_string_to_string(bit_string)
-  if (!stringResult.isOk()) return stringResult
-  try {
-    const result = JSON.parse(stringResult[0])
-    return new Ok(result)
-  } catch (err) {
-    return new Error(getJsonDecodeError(err))
-  }
-}
-
-export function decode_string_to_dynamic(string) {
+export function decode(string) {
   try {
     const result = JSON.parse(string)
     return new Ok(result)
@@ -45,7 +34,7 @@ export function decode_string_to_dynamic(string) {
 function getJsonDecodeError(stdErr) {
   if (isUnexpectedByte(stdErr)) return new toUnexpectedByteError(stdErr)
   if (isUnexpectedEndOfInput(stdErr)) return new UnexpectedEndOfInput()
-  return undefined
+  return new UnexpectedByte('', 0)
 }
 
 function isUnexpectedEndOfInput(err) {
