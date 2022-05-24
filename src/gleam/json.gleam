@@ -62,7 +62,7 @@ if javascript {
   }
 
   external fn decode_string(String) -> Result(Dynamic, DecodeError) =
-    "../gleam_json_ffi.mjs" "decode_string"
+    "../gleam_json_ffi.mjs" "decode"
 }
 
 /// Decode a JSON bit string into dynamically typed data which can be decoded
@@ -94,18 +94,18 @@ pub fn decode_bits(
   |> result.map_error(UnexpectedFormat)
 }
 
-fn decode_to_dynamic(bit_string: BitString) -> Result(Dynamic, DecodeError) {
-  do_decode_to_dynamic(bit_string)
-}
-
 if erlang {
-  external fn do_decode_to_dynamic(BitString) -> Result(Dynamic, DecodeError) =
+  external fn decode_to_dynamic(BitString) -> Result(Dynamic, DecodeError) =
     "gleam_json_ffi" "decode"
 }
 
 if javascript {
-  external fn do_decode_to_dynamic(BitString) -> Result(Dynamic, DecodeError) =
-    "../gleam_json_ffi.mjs" "decode"
+  fn decode_to_dynamic(json: BitString) -> Result(Dynamic, DecodeError) {
+    case bit_string.to_string(json) {
+      Ok(string) -> decode_string(string)
+      Error(Nil) -> Error(UnexpectedByte("", 0))
+    }
+  }
 }
 
 /// Convert a JSON value into a string.
