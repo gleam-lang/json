@@ -66,9 +66,6 @@ function getJsonDecodeError(stdErr, json) {
  * 
  * JSON.parse('{"a"')
  * // => Unexpected end of JSON input
- * 
- * // in Chromium (correct)
- * 
  */
 const unexpectedEndOfInputRegex = /((unexpected (end|eof))|(end of data)|(unterminated string)|(json( parse error|\.parse)\: expected '(\:|\}|\])'))/i
 
@@ -108,6 +105,23 @@ function getUnexpectedByteRuntime(err) {
   return null
 }
 
+/**
+ * Converts a SyntaxError to an UnexpectedByte error based on the JS runtime.
+ * 
+ * For Chromium, the unexpected byte and position are reported by the runtime.
+ * 
+ * For JavascriptCore, only the unexpected byte is reported by the runtime, so
+ * there is no way to know which position that character is in unless we then
+ * parse the string again ourselves. So instead, the position is reported as 0.
+ * 
+ * For Spidermonkey, the position is reported by the runtime as a line and column number 
+ * and the unexpected byte is found using those coordinates.
+ * 
+ * @param {'chromium' | 'spidermonkey' | 'jscore'} runtime 
+ * @param {SyntaxError} err 
+ * @param {string} json 
+ * @returns {UnexpectedByte}
+ */
 function toUnexpectedByteError(runtime, err, json) {
   switch (runtime) {
     case Runtime.chromium:
