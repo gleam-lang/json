@@ -80,7 +80,7 @@ function isUnexpectedEndOfInput(err) {
  * 
  * Matches the character and its position.
  */
-const chromiumUnexpectedByteRegex = /unexpected token (.) in JSON at position (\d+)/
+const chromiumUnexpectedByteRegex = /unexpected token (.) in JSON at position (\d+)/i
 
 /**
  * Matches unexpected byte messages in:
@@ -96,7 +96,7 @@ const jsCoreUnexpectedByteRegex = /unexpected identifier "(.)"/i
  * 
  * Matches the position in a 2d grid only and not the character.
  */
-const spidermonkeyUnexpectedByteRegex = /((unexpected character|expected double-quoted property name) at line (\d+) column (\d+))/i
+const spidermonkeyUnexpectedByteRegex = /(unexpected character|expected double-quoted property name) at line (\d+) column (\d+)/i
 
 function getUnexpectedByteRuntime(err) {
   if (chromiumUnexpectedByteRegex.test(err.message)) return Runtime.chromium
@@ -142,8 +142,8 @@ function toChromiumUnexpectedByteError(err) {
 
 function toSpidermonkeyUnexpectedByteError(err, json) {
   const match = spidermonkeyUnexpectedByteRegex.exec(err.message)
-  const line = Number(match[1])
-  const column = Number(match[2])
+  const line = Number(match[2])
+  const column = Number(match[3])
   const position = getPositionFromMultiline(line, column, json)
   const byte = toHex(err.message[position])
   return new UnexpectedByte(byte, position)
