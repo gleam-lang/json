@@ -145,7 +145,7 @@ function toSpidermonkeyUnexpectedByteError(err, json) {
   const line = Number(match[2])
   const column = Number(match[3])
   const position = getPositionFromMultiline(line, column, json)
-  const byte = toHex(err.message[position])
+  const byte = toHex(json[position])
   return new UnexpectedByte(byte, position)
 }
 
