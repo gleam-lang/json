@@ -27,9 +27,7 @@ pub fn decode_unexpected_byte_test() {
 
 pub fn decode_unexpected_format_test() {
   json.decode(from: "[]", using: dynamic.int)
-  |> should.equal(Error(json.UnexpectedFormat([
-    dynamic.DecodeError(expected: "Int", found: "List", path: []),
-  ])))
+  |> should.equal(Error(json.UnexpectedFormat([empty_list_decode_error()])))
 }
 
 pub fn decode_bits_test() {
@@ -49,9 +47,7 @@ pub fn decode_bits_unexpected_byte_test() {
 
 pub fn decode_bits_unexpected_format_test() {
   json.decode_bits(from: <<"[]":utf8>>, using: dynamic.int)
-  |> should.equal(Error(json.UnexpectedFormat([
-    dynamic.DecodeError(expected: "Int", found: "List", path: []),
-  ])))
+  |> should.equal(Error(json.UnexpectedFormat([empty_list_decode_error()])))
 }
 
 pub fn encode_string_test() {
@@ -125,4 +121,16 @@ fn should_encode(data: Json, expected: String) {
   |> json.to_string_builder
   |> string_builder.to_string
   |> should.equal(json.to_string(data))
+}
+
+if erlang {
+  fn empty_list_decode_error() -> dynamic.DecodeError {
+    dynamic.DecodeError(expected: "Int", found: "List", path: [])
+  }
+}
+
+if javascript {
+  fn empty_list_decode_error() {
+    dynamic.DecodeError(expected: "Int", found: "Tuple of 0 elements", path: [])
+  }
 }
