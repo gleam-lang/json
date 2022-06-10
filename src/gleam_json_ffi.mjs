@@ -36,7 +36,7 @@ export function decode(string) {
   }
 }
 
-function getJsonDecodeError(stdErr, json) {
+export function getJsonDecodeError(stdErr, json) {
   if (isUnexpectedEndOfInput(stdErr)) return new UnexpectedEndOfInput()
   const unexpectedByteRuntime = getUnexpectedByteRuntime(stdErr)
   if (unexpectedByteRuntime) return toUnexpectedByteError(unexpectedByteRuntime, stdErr, json)
@@ -88,7 +88,7 @@ const chromiumUnexpectedByteRegex = /unexpected token (.) in JSON at position (\
  * 
  * JavascriptCore only reports what the character is and not its position.
  */
-const jsCoreUnexpectedByteRegex = /unexpected identifier "(.)"/i
+const jsCoreUnexpectedByteRegex = /unexpected (identifier|token) "(.)"/i
 
 /**
  * Matches unexpected byte messages in:
@@ -96,7 +96,7 @@ const jsCoreUnexpectedByteRegex = /unexpected identifier "(.)"/i
  * 
  * Matches the position in a 2d grid only and not the character.
  */
-const spidermonkeyUnexpectedByteRegex = /(unexpected character|expected double-quoted property name) at line (\d+) column (\d+)/i
+const spidermonkeyUnexpectedByteRegex = /(unexpected character|expected .*) at line (\d+) column (\d+)/i
 
 function getUnexpectedByteRuntime(err) {
   if (chromiumUnexpectedByteRegex.test(err.message)) return Runtime.chromium
@@ -151,7 +151,7 @@ function toSpidermonkeyUnexpectedByteError(err, json) {
 
 function toJsCoreUnexpectedByteError(err) {
   const match = jsCoreUnexpectedByteRegex.exec(err.message)
-  const byte = toHex(match[1])
+  const byte = toHex(match[2])
   return new UnexpectedByte(byte, 0)
 }
 
