@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.5.0 - 2022-06-11
+
+- This library now works when running Gleam on JavaScript.
+
 ## v0.4.0 - 2022-02-05
 
 - The `decode_bits` function has been added.
