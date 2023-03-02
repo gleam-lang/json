@@ -56,7 +56,7 @@ if javascript {
     from json: String,
     using decoder: dynamic.Decoder(t),
   ) -> Result(t, DecodeError) {
-    try dynamic_value = decode_string(json)
+    use dynamic_value <- result.then(decode_string(json))
     decoder(dynamic_value)
     |> result.map_error(UnexpectedFormat)
   }
@@ -89,7 +89,7 @@ pub fn decode_bits(
   from json: BitString,
   using decoder: dynamic.Decoder(t),
 ) -> Result(t, DecodeError) {
-  try dynamic_value = decode_to_dynamic(json)
+  use dynamic_value <- result.then(decode_to_dynamic(json))
   decoder(dynamic_value)
   |> result.map_error(UnexpectedFormat)
 }
