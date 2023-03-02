@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.5.1 - 2023-03-02
+
+- Updated for Gleam v0.27.0.
+
 ## v0.5.0 - 2022-06-11
 
 - This library now works when running Gleam on JavaScript.

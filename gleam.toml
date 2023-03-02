@@ -1,5 +1,5 @@
 name = "gleam_json"
-version = "0.5.0"
+version = "0.5.1"
 licences = ["Apache-2.0"]
 description = "Work with JSON in Gleam"
 
