@@ -22,7 +22,7 @@ import gleam/json.{object, string, array, int, null}
 pub fn cat_to_json(cat: Cat) -> String {
   object([
     #("name", string(cat.name)),
-    #("lives", int(cat.lives),
+    #("lives", int(cat.lives)),
     #("flaws", null()),
     #("nicknames", array(cat.nicknames, of: string)),
   ])
