@@ -3,6 +3,7 @@
 ## Unreleased
 
 - Updated error parsing for current V8 runtimes.
+- Updated for Gleam v0.30.0.
 
 ## v0.5.1 - 2023-03-02
 

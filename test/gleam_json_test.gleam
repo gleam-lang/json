@@ -130,14 +130,12 @@ fn should_encode(data: Json, expected: String) {
   |> should.equal(json.to_string(data))
 }
 
-if erlang {
-  fn empty_list_decode_error() -> dynamic.DecodeError {
-    dynamic.DecodeError(expected: "Int", found: "List", path: [])
-  }
+@target(erlang)
+fn empty_list_decode_error() -> dynamic.DecodeError {
+  dynamic.DecodeError(expected: "Int", found: "List", path: [])
 }
 
-if javascript {
-  fn empty_list_decode_error() {
-    dynamic.DecodeError(expected: "Int", found: "Tuple of 0 elements", path: [])
-  }
+@target(javascript)
+fn empty_list_decode_error() {
+  dynamic.DecodeError(expected: "Int", found: "Tuple of 0 elements", path: [])
 }

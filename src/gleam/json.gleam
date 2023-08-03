@@ -5,7 +5,7 @@ import gleam/option.{None, Option, Some}
 import gleam/dynamic.{Dynamic}
 import gleam/string_builder.{StringBuilder}
 
-pub external type Json
+pub type Json
 
 pub type DecodeError {
   UnexpectedEndOfInput
@@ -41,29 +41,28 @@ pub fn decode(
   do_decode(from: json, using: decoder)
 }
 
-if erlang {
-  fn do_decode(
-    from json: String,
-    using decoder: dynamic.Decoder(t),
-  ) -> Result(t, DecodeError) {
-    let bits = bit_string.from_string(json)
-    decode_bits(bits, decoder)
-  }
+@target(erlang)
+fn do_decode(
+  from json: String,
+  using decoder: dynamic.Decoder(t),
+) -> Result(t, DecodeError) {
+  let bits = bit_string.from_string(json)
+  decode_bits(bits, decoder)
 }
 
-if javascript {
-  fn do_decode(
-    from json: String,
-    using decoder: dynamic.Decoder(t),
-  ) -> Result(t, DecodeError) {
-    use dynamic_value <- result.then(decode_string(json))
-    decoder(dynamic_value)
-    |> result.map_error(UnexpectedFormat)
-  }
-
-  external fn decode_string(String) -> Result(Dynamic, DecodeError) =
-    "../gleam_json_ffi.mjs" "decode"
+@target(javascript)
+fn do_decode(
+  from json: String,
+  using decoder: dynamic.Decoder(t),
+) -> Result(t, DecodeError) {
+  use dynamic_value <- result.then(decode_string(json))
+  decoder(dynamic_value)
+  |> result.map_error(UnexpectedFormat)
 }
+
+@target(javascript)
+@external(javascript, "../gleam_json_ffi.mjs", "decode")
+fn decode_string(a: String) -> Result(Dynamic, DecodeError)
 
 /// Decode a JSON bit string into dynamically typed data which can be decoded
 /// into typed data with the `gleam/dynamic` module.
@@ -94,17 +93,15 @@ pub fn decode_bits(
   |> result.map_error(UnexpectedFormat)
 }
 
-if erlang {
-  external fn decode_to_dynamic(BitString) -> Result(Dynamic, DecodeError) =
-    "gleam_json_ffi" "decode"
-}
+@target(erlang)
+@external(erlang, "gleam_json_ffi", "decode")
+fn decode_to_dynamic(a: BitString) -> Result(Dynamic, DecodeError)
 
-if javascript {
-  fn decode_to_dynamic(json: BitString) -> Result(Dynamic, DecodeError) {
-    case bit_string.to_string(json) {
-      Ok(string) -> decode_string(string)
-      Error(Nil) -> Error(UnexpectedByte("", 0))
-    }
+@target(javascript)
+fn decode_to_dynamic(json: BitString) -> Result(Dynamic, DecodeError) {
+  case bit_string.to_string(json) {
+    Ok(string) -> decode_string(string)
+    Error(Nil) -> Error(UnexpectedByte("", 0))
   }
 }
 
@@ -124,15 +121,9 @@ pub fn to_string(json: Json) -> String {
   do_to_string(json)
 }
 
-if erlang {
-  external fn do_to_string(Json) -> String =
-    "gleam_json_ffi" "json_to_string"
-}
-
-if javascript {
-  external fn do_to_string(Json) -> String =
-    "../gleam_json_ffi.mjs" "json_to_string"
-}
+@external(erlang, "gleam_json_ffi", "json_to_string")
+@external(javascript, "../gleam_json_ffi.mjs", "json_to_string")
+fn do_to_string(a: Json) -> String
 
 /// Convert a JSON value into a string builder.
 ///
@@ -151,15 +142,9 @@ pub fn to_string_builder(json: Json) -> StringBuilder {
   do_to_string_builder(json)
 }
 
-if erlang {
-  external fn do_to_string_builder(Json) -> StringBuilder =
-    "gleam_json_ffi" "json_to_iodata"
-}
-
-if javascript {
-  external fn do_to_string_builder(Json) -> StringBuilder =
-    "../gleam_json_ffi.mjs" "json_to_string"
-}
+@external(erlang, "gleam_json_ffi", "json_to_iodata")
+@external(javascript, "../gleam_json_ffi.mjs", "json_to_string")
+fn do_to_string_builder(a: Json) -> StringBuilder
 
 /// Encode a string into JSON, using normal JSON escaping.
 ///
@@ -174,15 +159,9 @@ pub fn string(input: String) -> Json {
   do_string(input)
 }
 
-if erlang {
-  external fn do_string(String) -> Json =
-    "gleam_json_ffi" "string"
-}
-
-if javascript {
-  external fn do_string(String) -> Json =
-    "../gleam_json_ffi.mjs" "identity"
-}
+@external(erlang, "gleam_json_ffi", "string")
+@external(javascript, "../gleam_json_ffi.mjs", "identity")
+fn do_string(a: String) -> Json
 
 /// Encode a bool into JSON.
 ///
@@ -197,15 +176,9 @@ pub fn bool(input: Bool) -> Json {
   do_bool(input)
 }
 
-if erlang {
-  external fn do_bool(Bool) -> Json =
-    "gleam_json_ffi" "bool"
-}
-
-if javascript {
-  external fn do_bool(Bool) -> Json =
-    "../gleam_json_ffi.mjs" "identity"
-}
+@external(erlang, "gleam_json_ffi", "bool")
+@external(javascript, "../gleam_json_ffi.mjs", "identity")
+fn do_bool(a: Bool) -> Json
 
 /// Encode an int into JSON.
 ///
@@ -220,15 +193,9 @@ pub fn int(input: Int) -> Json {
   do_int(input)
 }
 
-if erlang {
-  external fn do_int(Int) -> Json =
-    "gleam_json_ffi" "int"
-}
-
-if javascript {
-  external fn do_int(Int) -> Json =
-    "../gleam_json_ffi.mjs" "identity"
-}
+@external(erlang, "gleam_json_ffi", "int")
+@external(javascript, "../gleam_json_ffi.mjs", "identity")
+fn do_int(a: Int) -> Json
 
 /// Encode an float into JSON.
 ///
@@ -243,15 +210,9 @@ pub fn float(input: Float) -> Json {
   do_float(input)
 }
 
-if erlang {
-  external fn do_float(input: Float) -> Json =
-    "gleam_json_ffi" "float"
-}
-
-if javascript {
-  external fn do_float(input: Float) -> Json =
-    "../gleam_json_ffi.mjs" "identity"
-}
+@external(erlang, "gleam_json_ffi", "float")
+@external(javascript, "../gleam_json_ffi.mjs", "identity")
+fn do_float(input input: Float) -> Json
 
 /// The JSON value null.
 ///
@@ -266,15 +227,9 @@ pub fn null() -> Json {
   do_null()
 }
 
-if erlang {
-  external fn do_null() -> Json =
-    "gleam_json_ffi" "null"
-}
-
-if javascript {
-  external fn do_null() -> Json =
-    "../gleam_json_ffi.mjs" "do_null"
-}
+@external(erlang, "gleam_json_ffi", "null")
+@external(javascript, "../gleam_json_ffi.mjs", "do_null")
+fn do_null() -> Json
 
 /// Encode an optional value into JSON, using null if it the `None` variant.
 ///
@@ -313,15 +268,9 @@ pub fn object(entries: List(#(String, Json))) -> Json {
   do_object(entries)
 }
 
-if erlang {
-  external fn do_object(entries: List(#(String, Json))) -> Json =
-    "gleam_json_ffi" "object"
-}
-
-if javascript {
-  external fn do_object(entries: List(#(String, Json))) -> Json =
-    "../gleam_json_ffi.mjs" "object"
-}
+@external(erlang, "gleam_json_ffi", "object")
+@external(javascript, "../gleam_json_ffi.mjs", "object")
+fn do_object(entries entries: List(#(String, Json))) -> Json
 
 /// Encode a list into a JSON array.
 ///
@@ -351,12 +300,6 @@ pub fn preprocessed_array(from: List(Json)) -> Json {
   do_preprocessed_array(from)
 }
 
-if erlang {
-  external fn do_preprocessed_array(from: List(Json)) -> Json =
-    "gleam_json_ffi" "array"
-}
-
-if javascript {
-  external fn do_preprocessed_array(from: List(Json)) -> Json =
-    "../gleam_json_ffi.mjs" "array"
-}
+@external(erlang, "gleam_json_ffi", "array")
+@external(javascript, "../gleam_json_ffi.mjs", "array")
+fn do_preprocessed_array(from from: List(Json)) -> Json
