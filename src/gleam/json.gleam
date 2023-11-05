@@ -1,9 +1,9 @@
 import gleam/list
 import gleam/result
-import gleam/bit_string
-import gleam/option.{None, Option, Some}
-import gleam/dynamic.{Dynamic}
-import gleam/string_builder.{StringBuilder}
+import gleam/bit_array
+import gleam/option.{type Option, None, Some}
+import gleam/dynamic.{type Dynamic}
+import gleam/string_builder.{type StringBuilder}
 
 pub type Json
 
@@ -46,7 +46,7 @@ fn do_decode(
   from json: String,
   using decoder: dynamic.Decoder(t),
 ) -> Result(t, DecodeError) {
-  let bits = bit_string.from_string(json)
+  let bits = bit_array.from_string(json)
   decode_bits(bits, decoder)
 }
 
@@ -85,7 +85,7 @@ fn decode_string(a: String) -> Result(Dynamic, DecodeError)
 /// ```
 ///
 pub fn decode_bits(
-  from json: BitString,
+  from json: BitArray,
   using decoder: dynamic.Decoder(t),
 ) -> Result(t, DecodeError) {
   use dynamic_value <- result.then(decode_to_dynamic(json))
@@ -95,11 +95,11 @@ pub fn decode_bits(
 
 @target(erlang)
 @external(erlang, "gleam_json_ffi", "decode")
-fn decode_to_dynamic(a: BitString) -> Result(Dynamic, DecodeError)
+fn decode_to_dynamic(a: BitArray) -> Result(Dynamic, DecodeError)
 
 @target(javascript)
-fn decode_to_dynamic(json: BitString) -> Result(Dynamic, DecodeError) {
-  case bit_string.to_string(json) {
+fn decode_to_dynamic(json: BitArray) -> Result(Dynamic, DecodeError) {
+  case bit_array.to_string(json) {
     Ok(string) -> decode_string(string)
     Error(Nil) -> Error(UnexpectedByte("", 0))
   }

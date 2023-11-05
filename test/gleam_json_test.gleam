@@ -1,5 +1,5 @@
 import gleam/dynamic
-import gleam/json.{Json}
+import gleam/json.{type Json}
 import gleam/option.{None, Some}
 import gleam/string_builder
 import gleeunit

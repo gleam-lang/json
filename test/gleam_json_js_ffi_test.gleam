@@ -1,5 +1,5 @@
 @target(javascript)
-import gleam/json.{DecodeError, UnexpectedByte, UnexpectedEndOfInput}
+import gleam/json.{type DecodeError, UnexpectedByte, UnexpectedEndOfInput}
 @target(javascript)
 import gleeunit/should
 

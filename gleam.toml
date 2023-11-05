@@ -1,6 +1,6 @@
 name = "gleam_json"
 version = "0.6.0"
-gleam = ">= 0.30.0"
+gleam = ">= 0.32.0"
 
 licences = ["Apache-2.0"]
 description = "Work with JSON in Gleam"
@@ -16,4 +16,4 @@ gleam_stdlib = "~> 0.19"
 thoas = "~> 0.2"
 
 [dev-dependencies]
-gleeunit = "~> 0.6"
+gleeunit = "~> 1.0"
