@@ -15,7 +15,7 @@ jobs:
         with:
           otp-version: "25.1"
           elixir-version: "1.13.1"
-          gleam-version: "0.30.5"
+          gleam-version: "0.32.2"
           rebar3-version: "3"
       - run: gleam test
       - run: gleam test --target javascript
