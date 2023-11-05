@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.7.0 - 2023-11-05
+
+- Updated for Gleam v0.32.0.
+
 ## v0.6.0 - 2023-08-03
 
 - Updated error parsing for current V8 runtimes.
