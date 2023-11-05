@@ -25,12 +25,12 @@ pub type DecodeError {
 /// ```
 ///
 /// ```gleam
-/// > decode("[", into: dynamic.list(of: dynamic.int))
+/// > decode("[", dynamic.list(of: dynamic.int))
 /// Error(UnexpectedEndOfInput)
 /// ```
 ///
 /// ```gleam
-/// > decode("1", into: dynamic.string)
+/// > decode("1", dynamic.string)
 /// Error(UnexpectedFormat([dynamic.DecodeError("String", "Int", [])]))
 /// ```
 ///
@@ -75,12 +75,12 @@ fn decode_string(a: String) -> Result(Dynamic, DecodeError)
 /// ```
 ///
 /// ```gleam
-/// > decode_bits(<<"[">>, into: dynamic.list(of: dynamic.int))
+/// > decode_bits(<<"[">>, dynamic.list(of: dynamic.int))
 /// Error(UnexpectedEndOfInput)
 /// ```
 ///
 /// ```gleam
-/// > decode_bits("<<1">>, into: dynamic.string)
+/// > decode_bits("<<1">>, dynamic.string)
 /// Error(UnexpectedFormat([dynamic.DecodeError("String", "Int", [])]))
 /// ```
 ///
