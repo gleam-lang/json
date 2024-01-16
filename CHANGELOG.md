@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.0.0 - 2024-01-16
+
+- Relaxed stdlib version requirement.
+
 ## v0.7.0 - 2023-11-05
 
 - Updated for Gleam v0.32.0.
