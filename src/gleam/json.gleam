@@ -127,7 +127,7 @@ fn do_to_string(a: Json) -> String
 
 /// Convert a JSON value into a string builder.
 ///
-/// Where possible prefer this function to the  `to_string` function as it is
+/// Where possible prefer this function to the `to_string` function as it is
 /// slower than this function, and BEAM VM IO is optimised for sending
 /// `StringBuilder` data.
 ///
@@ -197,7 +197,7 @@ pub fn int(input: Int) -> Json {
 @external(javascript, "../gleam_json_ffi.mjs", "identity")
 fn do_int(a: Int) -> Json
 
-/// Encode an float into JSON.
+/// Encode a float into JSON.
 ///
 /// ## Examples
 ///
@@ -231,7 +231,7 @@ pub fn null() -> Json {
 @external(javascript, "../gleam_json_ffi.mjs", "do_null")
 fn do_null() -> Json
 
-/// Encode an optional value into JSON, using null if it the `None` variant.
+/// Encode an optional value into JSON, using null if it is the `None` variant.
 ///
 /// ## Examples
 ///
