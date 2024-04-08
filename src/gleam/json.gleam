@@ -151,7 +151,7 @@ fn do_to_string_builder(a: Json) -> StringBuilder
 /// ## Examples
 ///
 /// ```gleam
-/// > to_string("Hello!")
+/// > to_string(string("Hello!"))
 /// "\"Hello!\""
 /// ```
 ///
