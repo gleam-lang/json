@@ -8,6 +8,6 @@ packages = [
 ]
 
 [requirements]
-gleam_stdlib = { version = "~> 0.19 or ~> 1.0" }
+gleam_stdlib = { version = "~> 0.32 or ~> 1.0" }
 gleeunit = { version = "~> 1.0" }
 thoas = { version = "~> 1.2" }
