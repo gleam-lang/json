@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.0.1 - 2024-04-25
+
+- Relaxed Thoas version requirement.
+
 ## v1.0.0 - 2024-01-16
 
 - Relaxed stdlib version requirement.
