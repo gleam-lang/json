@@ -12,8 +12,8 @@ links = [
 ]
 
 [dependencies]
-gleam_stdlib = "~> 0.32 or ~> 1.0"
-thoas = "~> 1.2"
+gleam_stdlib = ">= 0.19.0 and < 2.0.0"
+thoas = ">= 0.2.0 and < 2.0.0"
 
 [dev-dependencies]
 gleeunit = "~> 1.0"
