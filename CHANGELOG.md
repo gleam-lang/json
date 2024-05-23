@@ -1,5 +1,13 @@
 # Changelog
 
+## v2.0.0 - Unreleased
+
+- The Thoas Erlang library has been removed as a dependency in favour of the
+  built-in Erlang JSON library. This means that Erlang/OTP 27.0 or higher is now
+  required.
+- The `UnexpectedSequence` and `UnexpectedByte` error variants no longer have
+  labels for their arguments.
+
 ## v1.0.1 - 2024-04-25
 
 - Relaxed Thoas version requirement.
