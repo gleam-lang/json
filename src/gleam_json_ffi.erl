@@ -5,6 +5,27 @@
     bool/1, null/0, array/1, object/1
 ]).
 
+-if(?OTP_RELEASE < 27).
+-define(bad_version, 
+    error({erlang_otp_27_required, << "Insufficient Erlang/OTP version.
+
+`gleam_json` uses the Erlang `json` module introduced in Erlang/OTP 27.
+You are using Erlang/OTP"/utf8, (integer_to_binary(?OTP_RELEASE))/binary, "
+Please upgrade your Erlang install or downgrade to `gleam_json` v1.0.1.
+"/utf8>>})).
+
+decode(_) -> ?bad_version.
+json_to_iodata(_) -> ?bad_version.
+json_to_string(_) -> ?bad_version.
+int(_) -> ?bad_version.
+float(_) -> ?bad_version.
+string(_) -> ?bad_version.
+bool(_) -> ?bad_version.
+array(_) -> ?bad_version.
+object(_) -> ?bad_version.
+null()  -> ?bad_version.
+-else.
+
 decode(Json) ->
     try
         {ok, json:decode(Json)}
@@ -41,3 +62,5 @@ array_loop([Elem | Rest]) -> [$,, Elem | array_loop(Rest)].
 object(List) -> encode_object([[$,, string(Key), $: | Value] || {Key, Value} <- List]).
 encode_object([]) -> <<"{}">>;
 encode_object([[_Comma | Entry] | Rest]) -> ["{", Entry, Rest, "}"].
+
+-endif.
