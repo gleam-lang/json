@@ -10,7 +10,7 @@
     error({erlang_otp_27_required, << "Insufficient Erlang/OTP version.
 
 `gleam_json` uses the Erlang `json` module introduced in Erlang/OTP 27.
-You are using Erlang/OTP"/utf8, (integer_to_binary(?OTP_RELEASE))/binary, "
+You are using Erlang/OTP "/utf8, (integer_to_binary(?OTP_RELEASE))/binary, "
 Please upgrade your Erlang install or downgrade to `gleam_json` v1.0.1.
 "/utf8>>})).
 
