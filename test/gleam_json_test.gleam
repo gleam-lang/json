@@ -93,6 +93,17 @@ pub fn encode_object_test() {
   |> should_encode("{\"foo\":5}")
 }
 
+pub fn encode_empty_object_test() {
+  json.object([])
+  |> should_encode("{}")
+}
+
+pub fn encode_empty_array_test() {
+  []
+  |> json.array(of: json.int)
+  |> should_encode("[]")
+}
+
 pub fn encode_array_test() {
   [5, 6, 1, 4]
   |> json.array(of: json.int)
@@ -102,6 +113,11 @@ pub fn encode_array_test() {
 pub fn encode_preprocessed_array_test() {
   json.preprocessed_array([json.int(5), json.int(6)])
   |> should_encode("[5,6]")
+}
+
+pub fn encode_empty_preprocessed_array_test() {
+  json.preprocessed_array([])
+  |> should_encode("[]")
 }
 
 pub fn encode_nullable_some_test() {

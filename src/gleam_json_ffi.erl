@@ -26,10 +26,18 @@ json_to_string(Json) when is_binary(Json) ->
 json_to_string(Json) when is_list(Json) ->
     list_to_binary(Json).
 
-null() -> thoas_encode:null().
-int(X) -> thoas_encode:integer(X).
-bool(X) -> thoas_encode:boolean(X).
-float(X) -> thoas_encode:float(X).
-string(X) -> thoas_encode:string(X).
-object(X) -> thoas_encode:non_recursive_object(X).
-array(X) -> thoas_encode:non_recursive_array(X).
+null() -> <<"null">>.
+bool(true) -> <<"true">>;
+bool(false) -> <<"false">>.
+int(X) -> json:encode_integer(X).
+float(X) -> json:encode_float(X).
+string(X) -> json:encode_binary(X).
+
+array([]) -> <<"[]">>;
+array([First | Rest]) -> [$[, First | array_loop(Rest)].
+array_loop([]) -> "]";
+array_loop([Elem | Rest]) -> [$,, Elem | array_loop(Rest)].
+
+object(List) -> encode_object([[$,, string(Key), $: | Value] || {Key, Value} <- List]).
+encode_object([]) -> <<"{}">>;
+encode_object([[_Comma | Entry] | Rest]) -> ["{", Entry, Rest, "}"].
