@@ -6,7 +6,17 @@
 ]).
 
 decode(Json) ->
-    thoas:decode(Json).
+    try
+        {ok, json:decode(Json)}
+    catch
+        error:unexpected_end -> {error, unexpected_end_of_input};
+        error:{invalid_byte, Byte} -> {error, {unexpected_byte, hex(Byte)}};
+        error:{unexpected_sequence, Byte} -> {error, {unexpected_sequence, Byte}}
+    end.
+
+hex(I) ->
+    H = list_to_binary(integer_to_list(I, 16)),
+    <<"0x"/utf8, H/binary>>.
 
 json_to_iodata(Json) ->
     Json.

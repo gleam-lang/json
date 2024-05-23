@@ -2,10 +2,9 @@
 
 Work with JSON in Gleam!
 
-Under the hood library uses [Thoas](https://github.com/lpil/thoas/), the fastest
-and most memory efficient pure Erlang JSON encoder/decoder.
-
 ## Installation
+
+Erlang/OTP 27.0 or higher is required when targeting Erlang.
 
 Add this package to your Gleam project.
 

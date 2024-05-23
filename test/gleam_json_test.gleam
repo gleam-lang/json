@@ -1,6 +1,7 @@
 import gleam/dynamic
 import gleam/json.{type Json}
 import gleam/option.{None, Some}
+import gleam/string
 import gleam/string_builder
 import gleeunit
 import gleeunit/should
@@ -21,11 +22,8 @@ pub fn decode_empty_test() {
 
 pub fn decode_unexpected_byte_test() {
   let assert Error(error) = json.decode(from: "[}", using: dynamic.int)
-  let assert json.UnexpectedByte(byte, index) = error
+  let assert json.UnexpectedByte(byte) = error
   let assert "0x7D" = byte
-
-  // V8 does not report the position of the unexpected byte any more.
-  let assert True = index == 1 || index == -1
 }
 
 pub fn decode_unexpected_format_test() {
@@ -45,16 +43,23 @@ pub fn decode_bits_empty_test() {
 
 pub fn decode_bits_unexpected_byte_test() {
   let assert Error(error) = json.decode(from: "[}", using: dynamic.int)
-  let assert json.UnexpectedByte(byte, index) = error
+  let assert json.UnexpectedByte(byte) = error
   let assert "0x7D" = byte
-
-  // V8 does not report the position of the unexpected byte any more.
-  let assert True = index == 1 || index == -1
 }
 
 pub fn decode_bits_unexpected_format_test() {
   json.decode_bits(from: <<"[]":utf8>>, using: dynamic.int)
   |> should.equal(Error(json.UnexpectedFormat([empty_list_decode_error()])))
+}
+
+pub fn decode_unexpected_sequence_test() {
+  let assert Error(error) =
+    json.decode(from: "\"\\uxxxx\"", using: dynamic.float)
+  case error {
+    json.UnexpectedSequence("\\uxxxx") -> Nil
+    json.UnexpectedByte("0x78") -> Nil
+    _ -> panic as { "unexpected error: " <> string.inspect(error) }
+  }
 }
 
 pub fn encode_string_test() {

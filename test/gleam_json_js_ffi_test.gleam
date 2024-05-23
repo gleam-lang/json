@@ -39,7 +39,7 @@ pub fn chromium_unexpected_byte_test() {
   "Unexpected token a in JSON at position 5"
   |> StandardError
   |> get_json_decode_error("{\"b\":a}")
-  |> should.equal(UnexpectedByte(byte: "0x61", position: 5))
+  |> should.equal(UnexpectedByte("0x61"))
 }
 
 @target(javascript)
@@ -47,7 +47,7 @@ pub fn spidermonkey_unexpected_byte_test() {
   "JSON.parse: expected property name or '}' at line 1 column 6 of the JSON data"
   |> StandardError
   |> get_json_decode_error("{\"b\":a}")
-  |> should.equal(UnexpectedByte(byte: "0x61", position: 5))
+  |> should.equal(UnexpectedByte("0x61"))
 }
 
 @target(javascript)
@@ -55,7 +55,7 @@ pub fn javascript_core_unexpected_byte_test() {
   "JSON Parse error: Unexpected identifier \"a\""
   |> StandardError
   |> get_json_decode_error("{\"b\":a}")
-  |> should.equal(UnexpectedByte(byte: "0x61", position: 0))
+  |> should.equal(UnexpectedByte("0x61"))
 }
 
 @target(javascript)
@@ -63,12 +63,12 @@ pub fn spidermonkey_multiline_unexpected_byte_test() {
   "JSON.parse: expected property name or '}' at line 2 column 6 of the JSON data"
   |> StandardError
   |> get_json_decode_error("{\n\"b\": a\n}")
-  |> should.equal(UnexpectedByte(byte: "0x61", position: 7))
+  |> should.equal(UnexpectedByte("0x61"))
 
   "JSON.parse: expected double-quoted property name at line 3 column 1 of the JSON data"
   |> StandardError
   |> get_json_decode_error("{\n\"b\": \"x\",\na\n}")
-  |> should.equal(UnexpectedByte(byte: "0x61", position: 12))
+  |> should.equal(UnexpectedByte("0x61"))
 }
 
 @target(javascript)

@@ -1,16 +1,16 @@
-import gleam/list
-import gleam/result
 import gleam/bit_array
-import gleam/option.{type Option, None, Some}
 import gleam/dynamic.{type Dynamic}
+import gleam/list
+import gleam/option.{type Option, None, Some}
+import gleam/result
 import gleam/string_builder.{type StringBuilder}
 
 pub type Json
 
 pub type DecodeError {
   UnexpectedEndOfInput
-  UnexpectedByte(byte: String, position: Int)
-  UnexpectedSequence(byte: String, position: Int)
+  UnexpectedByte(String)
+  UnexpectedSequence(String)
   UnexpectedFormat(List(dynamic.DecodeError))
 }
 
@@ -101,7 +101,7 @@ fn decode_to_dynamic(a: BitArray) -> Result(Dynamic, DecodeError)
 fn decode_to_dynamic(json: BitArray) -> Result(Dynamic, DecodeError) {
   case bit_array.to_string(json) {
     Ok(string) -> decode_string(string)
-    Error(Nil) -> Error(UnexpectedByte("", 0))
+    Error(Nil) -> Error(UnexpectedByte(""))
   }
 }
 

@@ -2,6 +2,7 @@ name = "gleam_json"
 version = "1.0.1"
 gleam = ">= 0.32.0"
 
+target = "javascript"
 licences = ["Apache-2.0"]
 description = "Work with JSON in Gleam"
 
