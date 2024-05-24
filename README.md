@@ -15,7 +15,7 @@ gleam add gleam_json
 ### Encoding
 
 ```gleam
-import myapp.{Cat}
+import myapp.{type Cat}
 import gleam/json.{object, string, array, int, null}
 
 pub fn cat_to_json(cat: Cat) -> String {
