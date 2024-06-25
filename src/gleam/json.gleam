@@ -60,7 +60,6 @@ fn do_decode(
   |> result.map_error(UnexpectedFormat)
 }
 
-@target(javascript)
 @external(javascript, "../gleam_json_ffi.mjs", "decode")
 fn decode_string(a: String) -> Result(Dynamic, DecodeError)
 
@@ -93,11 +92,7 @@ pub fn decode_bits(
   |> result.map_error(UnexpectedFormat)
 }
 
-@target(erlang)
 @external(erlang, "gleam_json_ffi", "decode")
-fn decode_to_dynamic(a: BitArray) -> Result(Dynamic, DecodeError)
-
-@target(javascript)
 fn decode_to_dynamic(json: BitArray) -> Result(Dynamic, DecodeError) {
   case bit_array.to_string(json) {
     Ok(string) -> decode_string(string)
