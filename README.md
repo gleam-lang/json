@@ -11,10 +11,14 @@ this package.
 Add this package to your Gleam project.
 
 ```shell
-gleam add gleam_json
+# Erlang version <= OTP26
+gleam add gleam_json@1
+
+# Erlang version >= OTP27
+gleam add gleam_json@2
 ```
 
-### Encoding
+## Encoding
 
 ```gleam
 import myapp.{type Cat}
@@ -31,7 +35,7 @@ pub fn cat_to_json(cat: Cat) -> String {
 }
 ```
 
-### Decoding
+## Decoding
 
 JSON is decoded into a `Dynamic` value which can be decoded using the
 `gleam/dynamic` module from the Gleam standard library.
