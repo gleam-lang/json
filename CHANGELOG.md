@@ -1,6 +1,10 @@
 # Changelog
 
-## v2.0.0 - Unreleased
+## v2.1.0 - 2024-11-19
+
+- `to_string_builder` has been deprecated in favour of `to_string_tree`.
+
+## v2.0.0 - 2024-05-23
 
 - The Thoas Erlang library has been removed as a dependency in favour of the
   built-in Erlang JSON library. This means that Erlang/OTP 27.0 or higher is now
