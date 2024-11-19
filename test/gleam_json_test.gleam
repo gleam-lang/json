@@ -2,7 +2,7 @@ import gleam/dynamic
 import gleam/json.{type Json}
 import gleam/option.{None, Some}
 import gleam/string
-import gleam/string_builder
+import gleam/string_tree
 import gleeunit
 import gleeunit/should
 
@@ -146,8 +146,8 @@ fn should_encode(data: Json, expected: String) {
   |> should.equal(expected)
 
   data
-  |> json.to_string_builder
-  |> string_builder.to_string
+  |> json.to_string_tree
+  |> string_tree.to_string
   |> should.equal(json.to_string(data))
 }
 

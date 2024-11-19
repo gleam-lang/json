@@ -3,7 +3,7 @@ import gleam/dynamic.{type Dynamic}
 import gleam/list
 import gleam/option.{type Option, None, Some}
 import gleam/result
-import gleam/string_builder.{type StringBuilder}
+import gleam/string_tree.{type StringTree}
 
 pub type Json
 
@@ -102,8 +102,8 @@ fn decode_to_dynamic(json: BitArray) -> Result(Dynamic, DecodeError) {
 
 /// Convert a JSON value into a string.
 ///
-/// Where possible prefer the `to_string_builder` function as it is faster than
-/// this function, and BEAM VM IO is optimised for sending `StringBuilder` data.
+/// Where possible prefer the `to_string_tree` function as it is faster than
+/// this function, and BEAM VM IO is optimised for sending `StringTree` data.
 ///
 /// ## Examples
 ///
@@ -133,13 +133,27 @@ fn do_to_string(a: Json) -> String
 /// string_builder.from_string("[1,2,3]")
 /// ```
 ///
-pub fn to_string_builder(json: Json) -> StringBuilder {
-  do_to_string_builder(json)
+@deprecated("Use `json.to_string_tree` instead.")
+pub fn to_string_builder(json: Json) -> StringTree {
+  to_string_tree(json)
 }
 
+/// Convert a JSON value into a string tree.
+///
+/// Where possible prefer this function to the `to_string` function as it is
+/// slower than this function, and BEAM VM IO is optimised for sending
+/// `StringTree` data.
+///
+/// ## Examples
+///
+/// ```gleam
+/// > to_string_tree(array([1, 2, 3], of: int))
+/// string_tree.from_string("[1,2,3]")
+/// ```
+///
 @external(erlang, "gleam_json_ffi", "json_to_iodata")
 @external(javascript, "../gleam_json_ffi.mjs", "json_to_string")
-fn do_to_string_builder(a: Json) -> StringBuilder
+pub fn to_string_tree(json: Json) -> StringTree
 
 /// Encode a string into JSON, using normal JSON escaping.
 ///
