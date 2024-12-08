@@ -124,7 +124,7 @@ fn do_to_string(a: Json) -> String
 ///
 /// Where possible prefer this function to the `to_string` function as it is
 /// slower than this function, and BEAM VM IO is optimised for sending
-/// `StringBuilder` data.
+/// `StringTree` data.
 ///
 /// ## Examples
 ///
