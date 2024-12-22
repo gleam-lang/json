@@ -22,37 +22,36 @@ gleam add gleam_json@2
 
 ```gleam
 import myapp.{type Cat}
-import gleam/json.{object, string, array, int, null}
+import gleam/json
 
 pub fn cat_to_json(cat: Cat) -> String {
-  object([
-    #("name", string(cat.name)),
-    #("lives", int(cat.lives)),
-    #("flaws", null()),
-    #("nicknames", array(cat.nicknames, of: string)),
+  json.object([
+    #("name", json.string(cat.name)),
+    #("lives", json.int(cat.lives)),
+    #("flaws", json.null()),
+    #("nicknames", json.array(cat.nicknames, of: json.string)),
   ])
   |> json.to_string
 }
 ```
 
-## Decoding
+## Parsing
 
-JSON is decoded into a `Dynamic` value which can be decoded using the
-`gleam/dynamic` module from the Gleam standard library.
+JSON is parsed into a `Dynamic` value which can be decoded using the
+`gleam/dynamic/decode` module from the Gleam standard library.
 
 ```gleam
 import myapp.{Cat}
 import gleam/json
-import gleam/dynamic.{field, list, int, string}
+import gleam/dynamic/decode
 
 pub fn cat_from_json(json_string: String) -> Result(Cat, json.DecodeError) {
-  let cat_decoder = dynamic.decode3(
-    Cat,
-    field("name", of: string),
-    field("lives", of: int),
-    field("nicknames", of: list(string)),
-  )
-
-  json.decode(from: json_string, using: cat_decoder)
+  let cat_decoder = {
+    use name <- decode.field("name", of: decode.string)
+    use name <- decode.field("lives", of: decode.int)
+    use name <- decode.field("nicknames", of: decode.list(decode.string))
+    decode.success(Cat(name:, lives:, nicknames:))
+  }
+  json.parse(from: json_string, using: cat_decoder)
 }
 ```

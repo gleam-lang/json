@@ -1,5 +1,10 @@
 # Changelog
 
+## v2.2.0 - 2024-11-22
+
+- `parse`, `parse_bits`, and `UnableToDecode` have been added to work with the
+  new `gleam/dynamic/decode` API.
+
 ## v2.1.0 - 2024-11-19
 
 - `to_string_builder` has been deprecated in favour of `to_string_tree`.

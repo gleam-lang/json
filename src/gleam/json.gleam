@@ -1,5 +1,6 @@
 import gleam/bit_array
 import gleam/dynamic.{type Dynamic}
+import gleam/dynamic/decode
 import gleam/list
 import gleam/option.{type Option, None, Some}
 import gleam/result
@@ -12,6 +13,16 @@ pub type DecodeError {
   UnexpectedByte(String)
   UnexpectedSequence(String)
   UnexpectedFormat(List(dynamic.DecodeError))
+  UnableToDecode(List(decode.DecodeError))
+}
+
+/// The same as `parse`, but using the old `gleam/dynamic` decoder API.
+///
+pub fn decode(
+  from json: String,
+  using decoder: dynamic.Decoder(t),
+) -> Result(t, DecodeError) {
+  do_decode(from: json, using: decoder)
 }
 
 /// Decode a JSON string into dynamically typed data which can be decoded into
@@ -20,25 +31,44 @@ pub type DecodeError {
 /// ## Examples
 ///
 /// ```gleam
-/// > decode("[1,2,3]", dynamic.list(of: dynamic.int))
+/// > decode("[1,2,3]", decode.list(of: decode.int))
 /// Ok([1, 2, 3])
 /// ```
 ///
 /// ```gleam
-/// > decode("[", dynamic.list(of: dynamic.int))
+/// > decode("[", decode.list(of: decode.int))
 /// Error(UnexpectedEndOfInput)
 /// ```
 ///
 /// ```gleam
-/// > decode("1", dynamic.string)
-/// Error(UnexpectedFormat([dynamic.DecodeError("String", "Int", [])]))
+/// > decode("1", decode.string)
+/// Error(UnableToDecode([decode.DecodeError("String", "Int", [])]))
 /// ```
 ///
-pub fn decode(
+pub fn parse(
   from json: String,
-  using decoder: dynamic.Decoder(t),
+  using decoder: decode.Decoder(t),
 ) -> Result(t, DecodeError) {
-  do_decode(from: json, using: decoder)
+  do_parse(from: json, using: decoder)
+}
+
+@target(erlang)
+fn do_parse(
+  from json: String,
+  using decoder: decode.Decoder(t),
+) -> Result(t, DecodeError) {
+  let bits = bit_array.from_string(json)
+  parse_bits(bits, decoder)
+}
+
+@target(javascript)
+fn do_parse(
+  from json: String,
+  using decoder: decode.Decoder(t),
+) -> Result(t, DecodeError) {
+  use dynamic_value <- result.then(decode_string(json))
+  decode.run(dynamic_value, decoder)
+  |> result.map_error(UnableToDecode)
 }
 
 @target(erlang)
@@ -63,25 +93,7 @@ fn do_decode(
 @external(javascript, "../gleam_json_ffi.mjs", "decode")
 fn decode_string(a: String) -> Result(Dynamic, DecodeError)
 
-/// Decode a JSON bit string into dynamically typed data which can be decoded
-/// into typed data with the `gleam/dynamic` module.
-///
-/// ## Examples
-///
-/// ```gleam
-/// > decode_bits(<<"[1,2,3]">>, dynamic.list(of: dynamic.int))
-/// Ok([1, 2, 3])
-/// ```
-///
-/// ```gleam
-/// > decode_bits(<<"[">>, dynamic.list(of: dynamic.int))
-/// Error(UnexpectedEndOfInput)
-/// ```
-///
-/// ```gleam
-/// > decode_bits("<<1">>, dynamic.string)
-/// Error(UnexpectedFormat([dynamic.DecodeError("String", "Int", [])]))
-/// ```
+/// The same as `parse_bits`, but using the old `gleam/dynamic` decoder API.
 ///
 pub fn decode_bits(
   from json: BitArray,
@@ -90,6 +102,35 @@ pub fn decode_bits(
   use dynamic_value <- result.then(decode_to_dynamic(json))
   decoder(dynamic_value)
   |> result.map_error(UnexpectedFormat)
+}
+
+/// Decode a JSON bit string into dynamically typed data which can be decoded
+/// into typed data with the `gleam/dynamic` module.
+///
+/// ## Examples
+///
+/// ```gleam
+/// > decode_bits(<<"[1,2,3]">>, decode.list(of: decode.int))
+/// Ok([1, 2, 3])
+/// ```
+///
+/// ```gleam
+/// > decode_bits(<<"[">>, decode.list(of: decode.int))
+/// Error(UnexpectedEndOfInput)
+/// ```
+///
+/// ```gleam
+/// > decode_bits("<<1">>, decode.string)
+/// Error(UnexpectedFormat([decode.DecodeError("String", "Int", [])]))
+/// ```
+///
+pub fn parse_bits(
+  from json: BitArray,
+  using decoder: decode.Decoder(t),
+) -> Result(t, DecodeError) {
+  use dynamic_value <- result.then(decode_to_dynamic(json))
+  decode.run(dynamic_value, decoder)
+  |> result.map_error(UnableToDecode)
 }
 
 @external(erlang, "gleam_json_ffi", "decode")
