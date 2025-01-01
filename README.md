@@ -47,9 +47,9 @@ import gleam/dynamic/decode
 
 pub fn cat_from_json(json_string: String) -> Result(Cat, json.DecodeError) {
   let cat_decoder = {
-    use name <- decode.field("name", of: decode.string)
-    use name <- decode.field("lives", of: decode.int)
-    use name <- decode.field("nicknames", of: decode.list(decode.string))
+    use name <- decode.field("name", decode.string)
+    use lives <- decode.field("lives", decode.int)
+    use nicknames <- decode.field("nicknames", decode.list(decode.string))
     decode.success(Cat(name:, lives:, nicknames:))
   }
   json.parse(from: json_string, using: cat_decoder)
