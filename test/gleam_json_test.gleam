@@ -1,5 +1,7 @@
+import gleam/dict
 import gleam/dynamic
 import gleam/dynamic/decode
+import gleam/int
 import gleam/json.{type Json}
 import gleam/option.{None, Some}
 import gleam/string
@@ -178,6 +180,11 @@ pub fn encode_bool_true_test() {
 pub fn encode_bool_false_test() {
   json.bool(False)
   |> should_encode("false")
+}
+
+pub fn encode_dict_test() {
+  json.dict(dict.from_list([#(3, 3.0)]), int.to_string, json.float)
+  |> should_encode("{\"3\":3.0}")
 }
 
 fn should_encode(data: Json, expected: String) {
