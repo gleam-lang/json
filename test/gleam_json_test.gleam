@@ -183,8 +183,8 @@ pub fn encode_bool_false_test() {
 }
 
 pub fn encode_dict_test() {
-  json.dict(dict.from_list([#(3, 3.0)]), int.to_string, json.float)
-  |> should_encode("{\"3\":3.0}")
+  json.dict(dict.from_list([#(3, 3)]), int.to_string, json.int)
+  |> should_encode("{\"3\":3}")
 }
 
 fn should_encode(data: Json, expected: String) {

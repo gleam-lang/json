@@ -1,5 +1,10 @@
 # Changelog
 
+
+## [unreleased]
+
+- Add `dict` function
+
 ## v2.2.0 - 2024-11-22
 
 - `parse`, `parse_bits`, and `UnableToDecode` have been added to work with the
