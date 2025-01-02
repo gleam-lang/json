@@ -1,4 +1,5 @@
 import gleam/bit_array
+import gleam/dict.{type Dict}
 import gleam/dynamic.{type Dynamic}
 import gleam/dynamic/decode
 import gleam/list
@@ -353,3 +354,21 @@ pub fn preprocessed_array(from: List(Json)) -> Json {
 @external(erlang, "gleam_json_ffi", "array")
 @external(javascript, "../gleam_json_ffi.mjs", "array")
 fn do_preprocessed_array(from from: List(Json)) -> Json
+
+/// Encode a Dict into a JSON object using the supplied functions to encode
+/// the keys and the values respectively.
+///
+/// ## Examples
+///
+/// ```gleam
+/// > to_string(dict(dict.from_list([ #(3, 3.0), #(4, 4.0)]), int.to_string, float)
+/// "{\"3\": 3.0, \"4\": 4.0}"
+/// ```
+///
+pub fn dict(
+  dict: Dict(k, v),
+  keys: fn(k) -> String,
+  values: fn(v) -> Json,
+) -> Json {
+  object(dict.fold(dict, [], fn(acc, k, v) { [#(keys(k), values(v)), ..acc] }))
+}
