@@ -32,17 +32,17 @@ pub fn decode(
 /// ## Examples
 ///
 /// ```gleam
-/// > decode("[1,2,3]", decode.list(of: decode.int))
+/// > parse("[1,2,3]", decode.list(of: decode.int))
 /// Ok([1, 2, 3])
 /// ```
 ///
 /// ```gleam
-/// > decode("[", decode.list(of: decode.int))
+/// > parse("[", decode.list(of: decode.int))
 /// Error(UnexpectedEndOfInput)
 /// ```
 ///
 /// ```gleam
-/// > decode("1", decode.string)
+/// > parse("1", decode.string)
 /// Error(UnableToDecode([decode.DecodeError("String", "Int", [])]))
 /// ```
 ///
@@ -111,18 +111,18 @@ pub fn decode_bits(
 /// ## Examples
 ///
 /// ```gleam
-/// > decode_bits(<<"[1,2,3]">>, decode.list(of: decode.int))
+/// > parse_bits(<<"[1,2,3]">>, decode.list(of: decode.int))
 /// Ok([1, 2, 3])
 /// ```
 ///
 /// ```gleam
-/// > decode_bits(<<"[">>, decode.list(of: decode.int))
+/// > parse_bits(<<"[">>, decode.list(of: decode.int))
 /// Error(UnexpectedEndOfInput)
 /// ```
 ///
 /// ```gleam
-/// > decode_bits("<<1">>, decode.string)
-/// Error(UnexpectedFormat([decode.DecodeError("String", "Int", [])]))
+/// > parse_bits(<<"1">>, decode.string)
+/// Error(UnableToDecode([decode.DecodeError("String", "Int", [])])),
 /// ```
 ///
 pub fn parse_bits(
