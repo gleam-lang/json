@@ -4,18 +4,8 @@ Work with JSON in Gleam!
 
 ## Installation
 
-Erlang/OTP 27.0 or higher is required when targeting Erlang.
-To use earlier versions of Erlang/OTP use version 1.0.1 of
-this package.
-
-Add this package to your Gleam project.
-
 ```shell
-# Erlang version <= OTP26
-gleam add gleam_json@1
-
-# Erlang version >= OTP27
-gleam add gleam_json@2
+gleam add gleam_json@3
 ```
 
 ## Encoding

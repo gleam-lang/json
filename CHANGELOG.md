@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## v3.0.0 - 2025-05-13
 
 - The `decode` and `decode_bits` functions, and the `UnexpectedFormat` variant,
   relying on the deprecated `gleam/dynamic` API have been removed from the
