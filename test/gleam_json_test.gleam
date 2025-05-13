@@ -1,5 +1,4 @@
 import gleam/dict
-import gleam/dynamic
 import gleam/dynamic/decode
 import gleam/int
 import gleam/json.{type Json}
@@ -17,35 +16,30 @@ pub fn main() {
 const list_found = "List"
 
 @target(javascript)
-const list_found = "Tuple of 0 elements"
-
-pub fn decode_test() {
-  json.decode(from: "5", using: dynamic.int)
-  |> should.equal(Ok(5))
-}
+const list_found = "Array"
 
 pub fn parse_test() {
   json.parse(from: "5", using: decode.int)
   |> should.equal(Ok(5))
 }
 
-pub fn decode_empty_test() {
-  json.decode(from: "", using: dynamic.int)
+pub fn parse_empty_test() {
+  json.parse(from: "", using: decode.int)
   |> should.equal(Error(json.UnexpectedEndOfInput))
 }
 
-pub fn decode_unexpected_byte_test() {
-  let assert Error(error) = json.decode(from: "[}", using: dynamic.int)
+pub fn parse_unexpected_byte_test() {
+  let assert Error(error) = json.parse(from: "[}", using: decode.int)
   let assert json.UnexpectedByte(byte) = error
   let assert "0x7D" = byte
 }
 
-pub fn decode_unexpected_format_test() {
-  json.decode(from: "[]", using: dynamic.int)
+pub fn parse_unexpected_format_test() {
+  json.parse(from: "[]", using: decode.int)
   |> should.equal(
     Error(
-      json.UnexpectedFormat([
-        dynamic.DecodeError(expected: "Int", found: list_found, path: []),
+      json.UnableToDecode([
+        decode.DecodeError(expected: "Int", found: list_found, path: []),
       ]),
     ),
   )
@@ -62,41 +56,35 @@ pub fn parse_unable_to_decode_test() {
   )
 }
 
-pub fn decode_bits_test() {
-  json.decode_bits(from: <<"5":utf8>>, using: dynamic.int)
-  |> should.equal(Ok(5))
-}
-
 pub fn parse_bits_test() {
   json.parse_bits(from: <<"5":utf8>>, using: decode.int)
   |> should.equal(Ok(5))
 }
 
-pub fn decode_bits_empty_test() {
-  json.decode_bits(from: <<"":utf8>>, using: dynamic.int)
+pub fn parse_bits_empty_test() {
+  json.parse_bits(from: <<"":utf8>>, using: decode.int)
   |> should.equal(Error(json.UnexpectedEndOfInput))
 }
 
-pub fn decode_bits_unexpected_byte_test() {
-  let assert Error(error) = json.decode(from: "[}", using: dynamic.int)
+pub fn parse_bits_unexpected_byte_test() {
+  let assert Error(error) = json.parse(from: "[}", using: decode.int)
   let assert json.UnexpectedByte(byte) = error
   let assert "0x7D" = byte
 }
 
-pub fn decode_bits_unexpected_format_test() {
-  json.decode_bits(from: <<"[]":utf8>>, using: dynamic.int)
+pub fn parse_bits_unexpected_format_test() {
+  json.parse_bits(from: <<"[]":utf8>>, using: decode.int)
   |> should.equal(
     Error(
-      json.UnexpectedFormat([
-        dynamic.DecodeError(expected: "Int", found: list_found, path: []),
+      json.UnableToDecode([
+        decode.DecodeError(expected: "Int", found: list_found, path: []),
       ]),
     ),
   )
 }
 
-pub fn decode_unexpected_sequence_test() {
-  let assert Error(error) =
-    json.decode(from: "\"\\uxxxx\"", using: dynamic.float)
+pub fn parse_unexpected_sequence_test() {
+  let assert Error(error) = json.parse(from: "\"\\uxxxx\"", using: decode.float)
   case error {
     json.UnexpectedSequence("\\uxxxx") -> Nil
     json.UnexpectedByte("0x78") -> Nil

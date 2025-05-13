@@ -13,17 +13,7 @@ pub type DecodeError {
   UnexpectedEndOfInput
   UnexpectedByte(String)
   UnexpectedSequence(String)
-  UnexpectedFormat(List(dynamic.DecodeError))
   UnableToDecode(List(decode.DecodeError))
-}
-
-/// The same as `parse`, but using the old `gleam/dynamic` decoder API.
-///
-pub fn decode(
-  from json: String,
-  using decoder: dynamic.Decoder(t),
-) -> Result(t, DecodeError) {
-  do_decode(from: json, using: decoder)
 }
 
 /// Decode a JSON string into dynamically typed data which can be decoded into
@@ -72,38 +62,8 @@ fn do_parse(
   |> result.map_error(UnableToDecode)
 }
 
-@target(erlang)
-fn do_decode(
-  from json: String,
-  using decoder: dynamic.Decoder(t),
-) -> Result(t, DecodeError) {
-  let bits = bit_array.from_string(json)
-  decode_bits(bits, decoder)
-}
-
-@target(javascript)
-fn do_decode(
-  from json: String,
-  using decoder: dynamic.Decoder(t),
-) -> Result(t, DecodeError) {
-  use dynamic_value <- result.then(decode_string(json))
-  decoder(dynamic_value)
-  |> result.map_error(UnexpectedFormat)
-}
-
 @external(javascript, "../gleam_json_ffi.mjs", "decode")
 fn decode_string(a: String) -> Result(Dynamic, DecodeError)
-
-/// The same as `parse_bits`, but using the old `gleam/dynamic` decoder API.
-///
-pub fn decode_bits(
-  from json: BitArray,
-  using decoder: dynamic.Decoder(t),
-) -> Result(t, DecodeError) {
-  use dynamic_value <- result.then(decode_to_dynamic(json))
-  decoder(dynamic_value)
-  |> result.map_error(UnexpectedFormat)
-}
 
 /// Decode a JSON bit string into dynamically typed data which can be decoded
 /// into typed data with the `gleam/dynamic` module.
