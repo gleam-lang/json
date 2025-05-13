@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+- The `decode` and `decode_bits` functions, and the `UnexpectedFormat` variant,
+  relying on the deprecated `gleam/dynamic` API have been removed from the
+  `json` module.
+
 ## v2.3.0 - 2025-01-04
 
 - Add `dict` function
