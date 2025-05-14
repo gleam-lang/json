@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+- The deprecated `to_string_builder` function from the `json` module has been
+  removed.
+
 ## v3.0.0 - 2025-05-13
 
 - The `decode` and `decode_bits` functions, and the `UnexpectedFormat` variant,
