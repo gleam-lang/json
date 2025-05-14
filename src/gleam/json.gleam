@@ -122,24 +122,6 @@ pub fn to_string(json: Json) -> String {
 @external(javascript, "../gleam_json_ffi.mjs", "json_to_string")
 fn do_to_string(a: Json) -> String
 
-/// Convert a JSON value into a string builder.
-///
-/// Where possible prefer this function to the `to_string` function as it is
-/// slower than this function, and BEAM VM IO is optimised for sending
-/// `StringTree` data.
-///
-/// ## Examples
-///
-/// ```gleam
-/// > to_string_builder(array([1, 2, 3], of: int))
-/// string_builder.from_string("[1,2,3]")
-/// ```
-///
-@deprecated("Use `json.to_string_tree` instead.")
-pub fn to_string_builder(json: Json) -> StringTree {
-  to_string_tree(json)
-}
-
 /// Convert a JSON value into a string tree.
 ///
 /// Where possible prefer this function to the `to_string` function as it is

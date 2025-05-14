@@ -1,5 +1,9 @@
 # Changelog
 
+## v3.0.1 - 2025-05-14
+
+- The `to_string_builder` function has been removed.
+
 ## v3.0.0 - 2025-05-13
 
 - The `decode` and `decode_bits` functions, and the `UnexpectedFormat` variant,
