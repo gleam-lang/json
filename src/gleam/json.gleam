@@ -57,7 +57,7 @@ fn do_parse(
   from json: String,
   using decoder: decode.Decoder(t),
 ) -> Result(t, DecodeError) {
-  use dynamic_value <- result.then(decode_string(json))
+  use dynamic_value <- result.try(decode_string(json))
   decode.run(dynamic_value, decoder)
   |> result.map_error(UnableToDecode)
 }
@@ -89,7 +89,7 @@ pub fn parse_bits(
   from json: BitArray,
   using decoder: decode.Decoder(t),
 ) -> Result(t, DecodeError) {
-  use dynamic_value <- result.then(decode_to_dynamic(json))
+  use dynamic_value <- result.try(decode_to_dynamic(json))
   decode.run(dynamic_value, decoder)
   |> result.map_error(UnableToDecode)
 }
