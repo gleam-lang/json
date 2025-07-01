@@ -1,5 +1,9 @@
 # Changelog
 
+## v3.0.2 - 2025-07-01
+
+- Updated for lastest `gleam_stdlib`.
+
 ## v3.0.1 - 2025-05-14
 
 - The `to_string_builder` function has been removed.

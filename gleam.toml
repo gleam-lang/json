@@ -1,5 +1,5 @@
 name = "gleam_json"
-version = "3.0.1"
+version = "3.0.2"
 gleam = ">= 0.32.0"
 
 licences = ["Apache-2.0"]
