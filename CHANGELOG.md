@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Add `sparse` function to omit null properties from created objects.
+
 ## v3.0.2 - 2025-07-01
 
 - Updated for lastest `gleam_stdlib`.

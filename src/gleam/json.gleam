@@ -254,7 +254,7 @@ pub fn nullable(from input: Option(a), of inner_type: fn(a) -> Json) -> Json {
 ///   #("game", string("Pac-Man")),
 ///   #("score", int(3333360)),
 /// ]))
-/// "{\"game\":\"Pac-Mac\",\"score\":3333360}"
+/// "{\"game\":\"Pac-Man\",\"score\":3333360}"
 /// ```
 ///
 pub fn object(entries: List(#(String, Json))) -> Json {
@@ -264,6 +264,27 @@ pub fn object(entries: List(#(String, Json))) -> Json {
 @external(erlang, "gleam_json_ffi", "object")
 @external(javascript, "../gleam_json_ffi.mjs", "object")
 fn do_object(entries entries: List(#(String, Json))) -> Json
+
+/// Encode a list of key-value pairs into a JSON object.
+/// Omit any properties that are null.
+///
+/// ## Examples
+///
+/// ```gleam
+/// > to_string(object([
+///   #("game", string("Sonic")),
+///   #("score", null()),
+/// ]))
+/// "{\"game\":\"Sonic\"}"
+/// ```
+///
+pub fn sparse(entries: List(#(String, Json))) -> Json {
+  list.filter(entries, fn(entry) {
+    let #(_, v) = entry
+    v != null()
+  })
+  |> object
+}
 
 /// Encode a list into a JSON array.
 ///

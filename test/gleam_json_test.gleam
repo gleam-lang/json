@@ -128,6 +128,16 @@ pub fn encode_empty_object_test() {
   |> should_encode("{}")
 }
 
+pub fn encode_sparse_object_test() {
+  json.sparse([#("foo", json.int(5))])
+  |> should_encode("{\"foo\":5}")
+}
+
+pub fn encode_empty_sparse_object_test() {
+  json.sparse([])
+  |> should_encode("{}")
+}
+
 pub fn encode_empty_array_test() {
   []
   |> json.array(of: json.int)
