@@ -1,5 +1,5 @@
-import { Ok, Error } from "./gleam.mjs";
-import { UnexpectedByte, UnexpectedEndOfInput } from "./gleam/json.mjs";
+import { Result$Ok, Result$Error, List$isNonEmpty, List$NonEmpty$first, List$NonEmpty$rest } from "./gleam.mjs";
+import { DecodeError$UnexpectedByte, DecodeError$UnexpectedEndOfInput } from "./gleam/json.mjs";
 
 export function json_to_string(json) {
   return JSON.stringify(json);
@@ -14,7 +14,12 @@ export function identity(x) {
 }
 
 export function array(list) {
-  return list.toArray();
+  const array = [];
+  while (List$isNonEmpty(list)) {
+    array.push(List$NonEmpty$first(list));
+    list = List$NonEmpty$rest(list);
+  }
+  return array;
 }
 
 export function do_null() {
@@ -24,14 +29,14 @@ export function do_null() {
 export function decode(string) {
   try {
     const result = JSON.parse(string);
-    return new Ok(result);
+    return Result$Ok(result);
   } catch (err) {
-    return new Error(getJsonDecodeError(err, string));
+    return Result$Error(getJsonDecodeError(err, string));
   }
 }
 
 export function getJsonDecodeError(stdErr, json) {
-  if (isUnexpectedEndOfInput(stdErr)) return new UnexpectedEndOfInput();
+  if (isUnexpectedEndOfInput(stdErr)) return DecodeError$UnexpectedEndOfInput();
   return toUnexpectedByteError(stdErr, json);
 }
 
@@ -76,11 +81,6 @@ function isUnexpectedEndOfInput(err) {
  *
  * For Spidermonkey, the position is reported by the runtime as a line and column number
  * and the unexpected byte is found using those coordinates.
- *
- * @param {'chromium' | 'spidermonkey' | 'jscore'} runtime
- * @param {SyntaxError} err
- * @param {string} json
- * @returns {UnexpectedByte}
  */
 function toUnexpectedByteError(err, json) {
   let converters = [
@@ -95,7 +95,7 @@ function toUnexpectedByteError(err, json) {
     if (result) return result;
   }
 
-  return new UnexpectedByte("", 0);
+  return DecodeError$UnexpectedByte("");
 }
 
 /**
@@ -110,7 +110,7 @@ function v8UnexpectedByteError(err) {
   const match = regex.exec(err.message);
   if (!match) return null;
   const byte = toHex(match[1]);
-  return new UnexpectedByte(byte, -1);
+  return DecodeError$UnexpectedByte(byte);
 }
 
 /**
@@ -126,8 +126,7 @@ function oldV8UnexpectedByteError(err) {
   const match = regex.exec(err.message);
   if (!match) return null;
   const byte = toHex(match[1]);
-  const position = Number(match[2]);
-  return new UnexpectedByte(byte, position);
+  return DecodeError$UnexpectedByte(byte);
 }
 
 /**
@@ -145,7 +144,7 @@ function spidermonkeyUnexpectedByteError(err, json) {
   const column = Number(match[3]);
   const position = getPositionFromMultiline(line, column, json);
   const byte = toHex(json[position]);
-  return new UnexpectedByte(byte, position);
+  return DecodeError$UnexpectedByte(byte);
 }
 
 /**
@@ -159,7 +158,7 @@ function jsCoreUnexpectedByteError(err) {
   const match = regex.exec(err.message);
   if (!match) return null;
   const byte = toHex(match[2]);
-  return new UnexpectedByte(byte, 0);
+  return DecodeError$UnexpectedByte(byte);
 }
 
 function toHex(char) {
