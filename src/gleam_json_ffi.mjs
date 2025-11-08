@@ -1,5 +1,14 @@
-import { Result$Ok, Result$Error, List$isNonEmpty, List$NonEmpty$first, List$NonEmpty$rest } from "./gleam.mjs";
-import { DecodeError$UnexpectedByte, DecodeError$UnexpectedEndOfInput } from "./gleam/json.mjs";
+import {
+  Result$Ok,
+  Result$Error,
+  List$isNonEmpty,
+  List$NonEmpty$first,
+  List$NonEmpty$rest,
+} from "./gleam.mjs";
+import {
+  DecodeError$UnexpectedByte,
+  DecodeError$UnexpectedEndOfInput,
+} from "./gleam/json.mjs";
 
 export function json_to_string(json) {
   return JSON.stringify(json);
