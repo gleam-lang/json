@@ -31,7 +31,7 @@ JSON is parsed into a `Dynamic` value which can be decoded using the
 `gleam/dynamic/decode` module from the Gleam standard library.
 
 ```gleam
-import myapp.{Cat}
+import myapp.{type Cat, Cat}
 import gleam/json
 import gleam/dynamic/decode
 
